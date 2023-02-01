@@ -22,7 +22,7 @@ var interval2 = 250;
 var promise = Promise.resolve();
 var tempvar = true;
 var isFlashing = false;
-var counter = -1;
+var counter = 0;
 
 window.requestAnimationFrame(update);
 function update() {
@@ -32,7 +32,7 @@ function update() {
   // console.log("x" + mouseX);
   // console.log("y" + mouseY);
   // console.log(interval);
-  console.log(isFlashing);
+  // console.log(isFlashing);
 
   // REQUEST ANIMATION FRAME
   window.requestAnimationFrame(update);
@@ -98,6 +98,14 @@ function draw() {
   ctx.fillText(score, 385, 585);
 }
 
+// RUN FIRST SEQUENCE ON START
+function startUp() {
+  addColor()
+  addColor()
+  startSequence()
+}
+
+
 // GET MOUSE POSITION
 document.querySelector("canvas").addEventListener("mouseup", getXYPosition);
 function getXYPosition(event) {
@@ -112,79 +120,104 @@ function getXYPosition(event) {
 function logic() {
   // DETERMINE COLOR CLICKED
   if (mouseX >= 100 && mouseX <= 300 && mouseY >= 50 && mouseY <= 250) {
-    // console.log("blue");
+    if (sequence.slice(counter, counter + 1) === "blue") {
+      counter++
+    } else {
+      counter = -1
+    }
+    console.log("blue");
   } else if (mouseX >= 500 && mouseX <= 700 && mouseY >= 50 && mouseY <= 250) {
-    // console.log("yellow");
+    if (sequence.slice(counter, counter + 1) === "yellow") {
+      counter++
+    } else {
+      counter = -1
+    }
+    console.log("yellow");
   } else if (mouseX >= 100 && mouseX <= 300 && mouseY >= 350 && mouseY <= 550) {
-    // console.log("red");
-  } else if (mouseX >= 500 && mouseX <= 700 && mouseY >= 350 && mouseY <= 550) {
-    // console.log("green");
+      if (sequence.slice(counter, counter + 1) === "red") {
+        counter++
+      } else {
+        counter = -1
+      }
+      console.log("red");
+    } else if (mouseX >= 500 && mouseX <= 700 && mouseY >= 350 && mouseY <= 550) {
+      if (sequence.slice(counter, counter + 1) === "green") {
+        counter++
+      } else {
+        counter = -1
+      }
+      console.log("green");
+    }
+
+    // // UPDATE SCORE IF CORRECT
+    if(counter == sequence.length - 1) {
+      counter = 0
+    score = sequence.length;
+    startSequence()
+    }
+
+    // RESET IF INCORECT
+    if (counter === -1) {
+      //   BORROW GAME OVER AND SCORE FROM SNAKE
+      console.log("game over")
+    }
+
+    // RESET MOUSE X+Y
+    mouseX = null;
+    mouseY = null;
+
+    // CHECK THAT ANSWERS ARE CORRECT
+    // sequence.forEach(function () {
+    //   promise = promise.then(function () {
+    //     if ()
+    //     return new Promise(function (resolve) {
+    //       setTimeout(resolve, interval);
+    //     });
+    //   });
+    // });
   }
 
-  // // UPDATE SCORE
-  // if(counter == sequence.length - 1) {
-  //   counter = -1
-  // score = sequence.length;
-  // startSequence()
-  // }
-
-  // RESET MOUSE X+Y
-  mouseX = null;
-  mouseY = null;
-
-  // CHECK THAT ANSWERS ARE CORRECT
-  // sequence.forEach(function () {
-  //   promise = promise.then(function () {
-  //     if ()
-  //     return new Promise(function (resolve) {
-  //       setTimeout(resolve, interval);
-  //     });
-  //   });
-  // });
-}
-
-function startSequence() {
-  addColor();
-  isFlashing = true;
-}
-
-function addColor() {
-  let ranNum = Math.random();
-  // PICK RANDOM COLOR
-  if (ranNum < 0.25) {
-    sequence.push("blue");
-  } else if (ranNum > 0.75) {
-    sequence.push("yellow");
-  } else if (ranNum >= 0.25 && ranNum < 0.5) {
-    sequence.push("red");
-  } else {
-    sequence.push("green");
-  }
-
-  sequence.forEach(function (element, index) {
-    promise = promise.then(function () {
-      if (element == "blue") {
-        blue = true;
-        // console.log("b");
-      } else if (element == "yellow") {
-        yellow = true;
-        // console.log("y");
-      } else if (element == "red") {
-        red = true;
-        // console.log("r");
-      } else if (element == "green") {
-        green = true;
-        // console.log("g");
-      }
-      // CHECK IF IT'S THE LAST ITEM IN ARRAY
-      if (index == sequence.length - 1) {
-        setTimeout(function changeVariable() {
-          isFlashing = false;
-        }, 500);
-      }
-      return new Promise(function (resolve) {
-        setTimeout(resolve, interval);
+  function startSequence() {
+    addColor();
+    isFlashing = true;
+    sequence.forEach(function (element, index) {
+      promise = promise.then(function () {
+        if (element == "blue") {
+          blue = true;
+          // console.log("b");
+        } else if (element == "yellow") {
+          yellow = true;
+          // console.log("y");
+        } else if (element == "red") {
+          red = true;
+          // console.log("r");
+        } else if (element == "green") {
+          green = true;
+          // console.log("g");
+        }
+        // CHECK IF IT'S THE LAST ITEM IN ARRAY
+        if (index == sequence.length - 1) {
+          setTimeout(function changeVariable() {
+            isFlashing = false;
+          }, 500);
+        }
+        return new Promise(function (resolve) {
+          setTimeout(resolve, interval);
+        });
       });
     });
-  });
-}
+  }
+
+  function addColor() {
+    let ranNum = Math.random();
+    // PICK RANDOM COLOR
+    if (ranNum < 0.25) {
+      sequence.push("blue");
+    } else if (ranNum > 0.75) {
+      sequence.push("yellow");
+    } else if (ranNum >= 0.25 && ranNum < 0.5) {
+      sequence.push("red");
+    } else {
+      sequence.push("green");
+    }
+  }
