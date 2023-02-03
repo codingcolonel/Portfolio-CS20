@@ -1,7 +1,7 @@
 // SET UP CANVAS AND 2D GRAPHICS CONTEXT
 // CHANGE SIZE
-let cnv = document.querySelector("canvas");
-let ctx = cnv.getContext("2d");
+let cnv = document.querySelector('canvas');
+let ctx = cnv.getContext('2d');
 cnv.width = 800;
 cnv.height = 600;
 
@@ -23,6 +23,10 @@ var promise = Promise.resolve();
 var tempvar = true;
 var isFlashing = false;
 var counter = 0;
+var blueClicked = false;
+var yellowClicked = false;
+var redClicked = false;
+var greenClicked = false;
 
 window.requestAnimationFrame(update);
 function update() {
@@ -39,185 +43,203 @@ function update() {
 }
 
 function draw() {
-  ctx.fillStyle = "white";
+  ctx.fillStyle = 'white';
   ctx.fillRect(0, 0, cnv.width, cnv.height);
 
   if (blue == false) {
-    ctx.fillStyle = "dodgerblue";
+    ctx.fillStyle = 'dodgerblue';
     ctx.fillRect(100, 50, 200, 200);
   }
 
   if (blue == true) {
-    ctx.fillStyle = "mediumblue";
+    ctx.fillStyle = 'mediumblue';
     ctx.fillRect(100, 50, 200, 200);
     setTimeout(function clearBlue() {
       blue = false;
     }, interval2);
   }
 
+  if (blueClicked == true) {
+    ctx.lineWidth = 5;
+    ctx.strokeRect(100, 50, 200, 200);
+  }
+
   if (yellow == false) {
-    ctx.fillStyle = "gold";
+    ctx.fillStyle = 'gold';
     ctx.fillRect(500, 50, 200, 200);
   }
 
   if (yellow == true) {
-    ctx.fillStyle = "goldenrod";
+    ctx.fillStyle = 'goldenrod';
     ctx.fillRect(500, 50, 200, 200);
     setTimeout(function clearYellow() {
       yellow = false;
     }, interval2);
   }
 
+  if (yellowClicked == true) {
+    ctx.lineWidth = 5;
+    ctx.strokeRect(500, 50, 200, 200);
+  }
+
   if (red == false) {
-    ctx.fillStyle = "red";
+    ctx.fillStyle = 'red';
     ctx.fillRect(100, 350, 200, 200);
   }
 
   if (red == true) {
-    ctx.fillStyle = "darkred";
+    ctx.fillStyle = 'darkred';
     ctx.fillRect(100, 350, 200, 200);
     setTimeout(function clearRed() {
       red = false;
     }, interval2);
   }
+
+  if (redClicked == true) {
+    ctx.lineWidth = 5;
+    ctx.strokeRect(100, 350, 200, 200);
+  }
+
   if (green == false) {
-    ctx.fillStyle = "forestgreen";
+    ctx.fillStyle = 'forestgreen';
     ctx.fillRect(500, 350, 200, 200);
   }
 
   if (green == true) {
-    ctx.fillStyle = "darkgreen";
+    ctx.fillStyle = 'darkgreen';
     ctx.fillRect(500, 350, 200, 200);
     setTimeout(function clearGreen() {
       green = false;
     }, interval2);
   }
 
-  ctx.font = "40px Monospace";
-  ctx.fillStyle = "black";
+  if (greenClicked == true) {
+    ctx.lineWidth = 5;
+    ctx.strokeRect(500, 350, 200, 200);
+  }
+
+  ctx.font = '40px Monospace';
+  ctx.fillStyle = 'black';
   ctx.fillText(score, 385, 585);
 }
 
 // RUN FIRST SEQUENCE ON START
 function startUp() {
-  addColor()
-  addColor()
-  startSequence()
+  addColor();
+  addColor();
+  startSequence();
 }
 
-
 // GET MOUSE POSITION
-document.querySelector("canvas").addEventListener("mouseup", getXYPosition);
+document.querySelector('canvas').addEventListener('mouseup', getXYPosition);
 function getXYPosition(event) {
   if (isFlashing == false) {
     mouseX = event.clientX - boundingRect.left;
     mouseY = event.clientY - boundingRect.top;
     logic();
-    console.log("click");
+    // console.log("click");
   }
 }
 
 function logic() {
-  // DETERMINE COLOR CLICKED
+  // DETERMINE COLOR CLICKED AND CORRECT
   if (mouseX >= 100 && mouseX <= 300 && mouseY >= 50 && mouseY <= 250) {
-    if (sequence.slice(counter, counter + 1) === "blue") {
-      counter++
+    if (sequence.at(counter) === 'blue') {
+      counter++;
     } else {
-      counter = -1
+      counter = -1;
     }
-    console.log("blue");
+    blueClicked = true;
   } else if (mouseX >= 500 && mouseX <= 700 && mouseY >= 50 && mouseY <= 250) {
-    if (sequence.slice(counter, counter + 1) === "yellow") {
-      counter++
+    if (sequence.at(counter) === 'yellow') {
+      counter++;
     } else {
-      counter = -1
+      counter = -1;
     }
-    console.log("yellow");
+    yellowClicked = true;
   } else if (mouseX >= 100 && mouseX <= 300 && mouseY >= 350 && mouseY <= 550) {
-      if (sequence.slice(counter, counter + 1) === "red") {
-        counter++
-      } else {
-        counter = -1
-      }
-      console.log("red");
-    } else if (mouseX >= 500 && mouseX <= 700 && mouseY >= 350 && mouseY <= 550) {
-      if (sequence.slice(counter, counter + 1) === "green") {
-        counter++
-      } else {
-        counter = -1
-      }
-      console.log("green");
+    if (sequence.at(counter) === 'red') {
+      counter++;
+    } else {
+      counter = -1;
     }
-
-    // // UPDATE SCORE IF CORRECT
-    if(counter == sequence.length - 1) {
-      counter = 0
-    score = sequence.length;
-    startSequence()
+    redClicked = true;
+  } else if (mouseX >= 500 && mouseX <= 700 && mouseY >= 350 && mouseY <= 550) {
+    if (sequence.at(counter) === 'green') {
+      counter++;
+    } else {
+      counter = -1;
     }
-
-    // RESET IF INCORECT
-    if (counter === -1) {
-      //   BORROW GAME OVER AND SCORE FROM SNAKE
-      console.log("game over")
-    }
-
-    // RESET MOUSE X+Y
-    mouseX = null;
-    mouseY = null;
-
-    // CHECK THAT ANSWERS ARE CORRECT
-    // sequence.forEach(function () {
-    //   promise = promise.then(function () {
-    //     if ()
-    //     return new Promise(function (resolve) {
-    //       setTimeout(resolve, interval);
-    //     });
-    //   });
-    // });
+    greenClicked = true;
   }
 
-  function startSequence() {
-    addColor();
-    isFlashing = true;
-    sequence.forEach(function (element, index) {
-      promise = promise.then(function () {
-        if (element == "blue") {
-          blue = true;
-          // console.log("b");
-        } else if (element == "yellow") {
-          yellow = true;
-          // console.log("y");
-        } else if (element == "red") {
-          red = true;
-          // console.log("r");
-        } else if (element == "green") {
-          green = true;
-          // console.log("g");
-        }
-        // CHECK IF IT'S THE LAST ITEM IN ARRAY
-        if (index == sequence.length - 1) {
-          setTimeout(function changeVariable() {
-            isFlashing = false;
-          }, 500);
-        }
-        return new Promise(function (resolve) {
-          setTimeout(resolve, interval);
-        });
+  // // UPDATE SCORE IF CORRECT
+  if (counter == sequence.length) {
+    counter = 0;
+    score = sequence.length;
+    startSequence();
+  }
+
+  // RESET IF INCORECT
+  if (counter === -1) {
+    //   BORROW GAME OVER AND SCORE FROM SNAKE
+    alert('game over');
+  }
+
+  // RESET VARIABLES
+  setTimeout(function resetVar() {
+    blueClicked = false;
+    redClicked = false;
+    yellowClicked = false;
+    greenClicked = false;
+  }, interval2);
+
+  // RESET MOUSE X+Y
+  mouseX = null;
+  mouseY = null;
+}
+
+function startSequence() {
+  addColor();
+  isFlashing = true;
+  sequence.forEach(function (element, index) {
+    promise = promise.then(function () {
+      if (element == 'blue') {
+        blue = true;
+        // console.log("b");
+      } else if (element == 'yellow') {
+        yellow = true;
+        // console.log("y");
+      } else if (element == 'red') {
+        red = true;
+        // console.log("r");
+      } else if (element == 'green') {
+        green = true;
+        // console.log("g");
+      }
+      // CHECK IF IT'S THE LAST ITEM IN ARRAY
+      if (index == sequence.length - 1) {
+        setTimeout(function changeVariable() {
+          isFlashing = false;
+        }, 500);
+      }
+      return new Promise(function (resolve) {
+        setTimeout(resolve, interval);
       });
     });
-  }
+  });
+}
 
-  function addColor() {
-    let ranNum = Math.random();
-    // PICK RANDOM COLOR
-    if (ranNum < 0.25) {
-      sequence.push("blue");
-    } else if (ranNum > 0.75) {
-      sequence.push("yellow");
-    } else if (ranNum >= 0.25 && ranNum < 0.5) {
-      sequence.push("red");
-    } else {
-      sequence.push("green");
-    }
+function addColor() {
+  let ranNum = Math.random();
+  // PICK RANDOM COLOR
+  if (ranNum < 0.25) {
+    sequence.push('blue');
+  } else if (ranNum > 0.75) {
+    sequence.push('yellow');
+  } else if (ranNum >= 0.25 && ranNum < 0.5) {
+    sequence.push('red');
+  } else {
+    sequence.push('green');
   }
+}
