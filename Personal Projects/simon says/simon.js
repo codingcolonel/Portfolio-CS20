@@ -182,7 +182,6 @@ function logic() {
 
   // RESET IF INCORECT
   if (counter === -1) {
-    //   BORROW GAME OVER AND SCORE FROM SNAKE
     alert('game over');
   }
 

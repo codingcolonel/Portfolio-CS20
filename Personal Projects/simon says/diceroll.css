@@ -1,0 +1,18 @@
+body{
+    text-align: center;
+  }
+  
+  canvas{
+    border: 1px solid gray;
+    margin-bottom: 0;
+  }
+  
+  p{
+    font-size: 100px;
+    font-family: monospace;
+    font-weight: bold;
+    margin-top: 50px
+  }
+
+  /* https://medium.com/@jlucas5280/rolling-dice-cfda66f2002d */
+  /* https://icodemag.com/3d-rolling-dice-css-javascript/ */

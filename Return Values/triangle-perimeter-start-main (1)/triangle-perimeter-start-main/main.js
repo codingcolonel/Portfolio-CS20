@@ -10,15 +10,19 @@ function btnClicked() {
   let xc = document.getElementById('vertexXC').value;
   let yc = document.getElementById('vertexYC').value;
 
+  // Store side lengths
+  let abSide = dist(xa, ya, xb, yb);
+  let acSide = dist(xa, ya, xc, yc);
+  let bcSide = dist(xb, yb, xc, yc);
+
   // Output side lengths and perimeter
-  document.getElementById('abSide').innerHTML = dist(xa, ya, xb, yb);
+  document.getElementById('abSide').innerHTML = abSide;
 
-  document.getElementById('acSide').innerHTML = dist(xa, ya, xc, yc);
+  document.getElementById('acSide').innerHTML = acSide;
 
-  document.getElementById('bcSide').innerHTML = dist(xa, ya, xc, yc);
+  document.getElementById('bcSide').innerHTML = bcSide;
 
-  document.getElementById('abcPerimeter').innerHTML =
-    dist(xa, ya, xb, yb) + dist(xa, ya, xc, yc) + dist(xa, ya, xc, yc);
+  document.getElementById('abcPerimeter').innerHTML = abSide + acSide + bcSide;
 }
 
 function dist(x1, y1, x2, y2) {
