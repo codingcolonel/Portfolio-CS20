@@ -45,11 +45,13 @@ function displayStartingLetter() {
       outputEl.innerHTML += `<div style="background-color: ${colors[i]};">${colors[i]}</div>`;
     }
   }
-  outputEl.innerHTML += `<p></P`;
+  outputEl.innerHTML += `<p>Number of Colors: ${count}</p>`;
 }
 
 function randomColor() {
-  outputEl.innerHTML = 'Random Color';
+  let ranColor = randomInt(0, colors.length + 1);
+
+  outputEl.innerHTML = `<div style="background-color: ${colors[ranColor]};">${colors[ranColor]}</div>`;
 }
 
 // https://www.youtube.com/watch?v=Q-4InT18p8w&list=PLVrsNRbJzKu-P-pj7jQRu21lJaI46-t_J&index=9
