@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Nickname Generator</title>
+
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="js/random-library.js"></script>
+    <script defer src="js/main.js"></script>
+  </head>
+
+  <body>
+    <h1>Nickname Generator</h1>
+    <hr />
+
+    <p>Enter your name, make a selection from the menu and press "GO".</p>
+
+    <p>First Name: <input type="text" id="firstNameIn" class="input" /></p>
+    <p>Last Name: <input type="text" id="lastNameIn" class="input" /></p>
+
+    <p>
+      <select id="menu-select" class="input">
+        <option value="allNick">Display All Nicknames</option>
+        <option value="randomNick">Display Random Nickname</option>
+        <option value="addNick">Add a Nickname</option>
+        <option value="removeNick">Remove Last Nickname</option>
+        <option value="removeNickIndex">Remove Nickname by Index</option>
+      </select>
+      <button id="btn">GO</button>
+    </p>
+    <hr />
+
+    <div id="output"></div>
+  </body>
+</html>
