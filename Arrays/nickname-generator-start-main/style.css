@@ -18,5 +18,11 @@ body {
   }
   
   #output {
-    font-size: 24px;
+    font-size: 15px;
   }
+  
+  .error {
+    color: red;
+    font-size: 12px;
+  }
+  
