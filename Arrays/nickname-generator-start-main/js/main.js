@@ -36,13 +36,13 @@ function btnClicked() {
     if (firstName !== '' && lastName !== '') {
       allNicknames();
     } else {
-      outputEl.innerHTML += `<p class='error'>Please enter a valid nickname</p>`;
+      outputEl.innerHTML += `<p class='error'>Please enter a valid first and last name</p>`;
     }
   } else if (selection === 'randomNick') {
     if (firstName !== '' && lastName !== '') {
       randomNickname();
     } else {
-      outputEl.innerHTML += `<p class='error'>Please enter a valid nickname</p>`;
+      outputEl.innerHTML += `<p class='error'>Please enter a valid first and last name</p>`;
     }
   } else if (selection === 'addNick') {
     addNickname();
@@ -55,16 +55,30 @@ function btnClicked() {
 
 function allNicknames() {
   // Get all nicknames from array and output them
-  for (let i = 0; i < nicknames.length; i++) {
-    outputEl.innerHTML += `<p>${firstName} "${nicknames[i]}" ${lastName}</p>`;
+  if (nicknames.length > 0) {
+    for (let i = 0; i < nicknames.length; i++) {
+      outputEl.innerHTML += `<p>${firstName} "${nicknames[i]}" ${lastName}</p>`;
+    }
+  } else {
+    outputEl.innerHTML += `<p class='error'>No nicknames to display</p>`;
+    setTimeout(() => {
+      outputEl.innerHTML = '';
+    }, 1000);
   }
 }
 
 function randomNickname() {
-  // Get random nickname from array and output it
-  outputEl.innerHTML += `<p>${firstName} "${
-    nicknames[randomInt(0, nicknames.length)]
-  }" ${lastName}</p>`;
+  if (nicknames.length > 0) {
+    // Get random nickname from array and output it
+    outputEl.innerHTML += `<p>${firstName} "${
+      nicknames[randomInt(0, nicknames.length)]
+    }" ${lastName}</p>`;
+  } else {
+    outputEl.innerHTML += `<p class='error'>No nicknames to display</p>`;
+    setTimeout(() => {
+      outputEl.innerHTML = '';
+    }, 1000);
+  }
 }
 
 function addNickname() {
@@ -91,13 +105,48 @@ function addNicknameToArray() {
 
 function removeNickname() {
   // Remove the newest nickname in the array
-  nicknames.pop();
-  outputEl.innerHTML += '<p>Removed most recent nickname</p>';
-  setTimeout(() => {
-    outputEl.innerHTML = '';
-  }, 1000);
+  if (nicknames.length > 0) {
+    nicknames.pop();
+    outputEl.innerHTML += '<p>Removed most recent nickname</p>';
+    setTimeout(() => {
+      outputEl.innerHTML = '';
+    }, 1000);
+  } else {
+    outputEl.innerHTML += `<p class='error'>No nicknames to remove</p>`;
+    setTimeout(() => {
+      outputEl.innerHTML = '';
+    }, 1000);
+  }
 }
 
 function removeNicknameByIndex() {
   // Ask user for a valid index and remove that nickname from the array
+  // Remove the newest nickname in the array
+  outputEl.innerHTML += `<p>Enter an index to remove: <input type="number" id="arrayIndexIn" class="input" /><button id="btn3">GO</button></p>`;
+
+  document
+    .getElementById('btn3')
+    .addEventListener('click', removeNicknameFromArray);
+}
+
+function removeNicknameFromArray() {
+  let index = document.getElementById('arrayIndexIn').value;
+  if (nicknames.length > 0 && index > 0 && index < nicknames.length) {
+    document.getElementById('error1').remove();
+    nicknames.splice(index, 1);
+    outputEl.innerHTML += `<p>Removed nickname at index ${index}</p>`;
+    setTimeout(() => {
+      outputEl.innerHTML = '';
+    }, 1000);
+  } else if (index < 0 || index > nicknames.length) {
+    outputEl.innerHTML += `<p class='error' id='error1'>Please enter a valid index</p>`;
+    document
+      .getElementById('btn3')
+      .addEventListener('click', removeNicknameFromArray);
+  } else {
+    outputEl.innerHTML += `<p class='error' id='error1'>No nicknames to remove</p>`;
+    document
+      .getElementById('btn3')
+      .addEventListener('click', removeNicknameFromArray);
+  }
 }
