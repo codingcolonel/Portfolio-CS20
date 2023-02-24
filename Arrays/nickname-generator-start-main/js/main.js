@@ -54,6 +54,8 @@ function btnClicked() {
     removeNickname();
   } else if (selection === 'removeNickIndex') {
     removeNicknameByIndex();
+  } else if (selection === 'removeNickSearch') {
+    removeNicknameSearch();
   }
 }
 
@@ -143,8 +145,9 @@ function removeNickname() {
 
 function removeNicknameByIndex() {
   // Ask user for a valid index
-  outputEl.innerHTML += `<p>Enter an index to remove: <input type="number" id="arrayIndexIn" class="input" required minlength= '0'/><button id="btn3">GO</button></p>`;
+  outputEl.innerHTML += `<p>Enter an index to remove: <input type="number" id="arrayIndexIn" class="input"/><button id="btn3">GO</button></p>`;
 
+  // Add event listener to button
   document
     .getElementById('btn3')
     .addEventListener('click', removeNicknameFromArray);
@@ -175,6 +178,53 @@ function removeNicknameFromArray() {
     // If no errors are present remove nickname at specified index
     nicknames.splice(index, 1);
     outputEl.innerHTML += `<p>Removed nickname at index ${index}</p>`;
+    setTimeout(() => {
+      outputEl.innerHTML = '';
+    }, 1000);
+  }
+}
+
+function removeNicknameSearch() {
+  // Remove the nickname from the array
+
+  // Ask user for a valid nickname
+  outputEl.innerHTML += `<p>Enter a nickname to remove: <input type="text" id="arraySearchIn" class="input"/><button id="btn4">GO</button></p>`;
+
+  // Add event listener to button
+  document
+    .getElementById('btn4')
+    .addEventListener('click', removeSearchedNicknameFromArray);
+}
+
+function removeSearchedNicknameFromArray() {
+  // Get search results
+  let search = document.getElementById('arraySearchIn').value;
+
+  // Remove all instances of an error
+  document.querySelectorAll('.error').forEach((e) => e.remove());
+
+  if (search === '') {
+    // Output error if search box is empty
+    outputEl.innerHTML += `<p class='error'>Please enter a valid nickname</p>`;
+    document
+      .getElementById('btn4')
+      .addEventListener('click', removeSearchedNicknameFromArray);
+  } else if (nicknames.length === 0) {
+    // Output error if there are no nicknames in the array
+    outputEl.innerHTML += `<p class='error'>No nicknames to remove</p>`;
+    document
+      .getElementById('btn4')
+      .addEventListener('click', removeSearchedNicknameFromArray);
+  } else if (nicknames.includes(search) === false) {
+    // Output error if nickname search does not exist in the array
+    outputEl.innerHTML += `<p class='error'>Nickname does not exist</p>`;
+    document
+      .getElementById('btn4')
+      .addEventListener('click', removeSearchedNicknameFromArray);
+  } else {
+    // If no errors are prsent then remove serach nickname from the array
+    nicknames.splice(nicknames.indexOf(search), 1);
+    outputEl.innerHTML += `<p>Removed ${search} from nicknames list</p>`;
     setTimeout(() => {
       outputEl.innerHTML = '';
     }, 1000);
