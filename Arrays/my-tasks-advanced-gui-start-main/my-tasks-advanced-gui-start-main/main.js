@@ -13,33 +13,13 @@ displayTasks();
 tasksInputEl.addEventListener('keydown', keydownHandler);
 
 function keydownHandler(e) {
-  console.log(e.keyCode);
-  if (e.keyCode === 13) {
-    let userTask = tasksInputEl.value;
+  let userTask = tasksInputEl.value;
+  if (e.keyCode === 13 && e.repeat === false && userTask !== '') {
     tasks.push(newTask(userTask));
     saveTasks();
     displayTasks();
     tasksInputEl.value = '';
   }
-}
-
-function toggleTask() {
-  let taskIndex = +prompt('Please enter number of task to toggle:');
-  let task = tasks[taskIndex];
-  if (task.completed === '') {
-    task.completed = 'completed';
-  } else {
-    task.completed = '';
-  }
-  saveTasks();
-  displayTasks();
-}
-
-function removeTask() {
-  let taskIndex = +prompt('Please enter number of task to remove:');
-  tasks.splice(taskIndex, 1);
-  saveTasks();
-  displayTasks();
 }
 
 function clearAll() {
@@ -55,6 +35,7 @@ function initTasks() {
 }
 
 function displayTasks() {
+  tasksEl.innerHTML = '';
   for (let i = 0; i < tasks.length; i++) {
     tasksEl.appendChild(getTaskHTML(tasks[i], i));
   }
@@ -63,7 +44,7 @@ function displayTasks() {
 function newTask(taskDescription) {
   return {
     description: taskDescription,
-    completed: '',
+    completed: false,
   };
 }
 
@@ -77,20 +58,27 @@ function getTaskHTML(task, index) {
   // Check Box Element
   let checkBoxEl = document.createElement('input');
   checkBoxEl.type = 'checkbox';
+  checkBoxEl.dataset.index = index;
+  checkBoxEl.checked = task.completed;
   checkBoxEl.addEventListener('input', checkBoxHandler);
 
   // Task Description Text Node
-  let textEl = document.createTextNode(task.description);
+  let textSpanEl = document.createElement('span');
+  textSpanEl.innerHTML = task.description;
+  if (task.completed) {
+    textSpanEl.className = 'completed';
+  }
 
   // Remove button
   let buttonEl = document.createElement('button');
   buttonEl.innerHTML = 'Remove';
+  buttonEl.dataset.index = index;
   buttonEl.addEventListener('click', removeBtnHandler);
 
   // Add everything to a div element
   let divEl = document.createElement('div');
   divEl.appendChild(checkBoxEl);
-  divEl.appendChild(textEl);
+  divEl.appendChild(textSpanEl);
   divEl.appendChild(buttonEl);
 
   return divEl;
@@ -98,9 +86,20 @@ function getTaskHTML(task, index) {
 
 // Event Function
 function checkBoxHandler(e) {
+  // Get index of task to toggle
+  let taskIndex = e.target.dataset.index;
+  let task = tasks[taskIndex];
+  task.completed = !task.completed;
+  saveTasks();
+  displayTasks();
   console.log(e.target);
 }
 
 function removeBtnHandler(e) {
+  // Get index of task to remove
+  let taskIndex = e.target.dataset.index;
+  tasks.splice(taskIndex, 1);
+  saveTasks();
+  displayTasks();
   console.log(e.target);
 }
