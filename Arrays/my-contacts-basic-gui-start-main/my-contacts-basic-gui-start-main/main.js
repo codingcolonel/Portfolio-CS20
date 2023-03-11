@@ -4,12 +4,11 @@
 let goBtnEl = document.getElementById('go-btn');
 let menuEl = document.getElementById('menu');
 let outputEl = document.getElementById('output');
-let textboxPEl;
-let textboxEl;
+let inputPEl;
+let inputEl;
 
 // Global array
 let contacts = initContacts();
-displayAll();
 
 // Go Btn - Menu Listener
 goBtnEl.addEventListener('click', goBtnHandler);
@@ -21,6 +20,8 @@ function goBtnHandler() {
   if (selection === 'display-all') {
     displayContacts();
   } else if (selection === 'add') {
+    item = 'name';
+    instanceCounter = 0;
     addContact();
   } else if (selection === 'remove') {
     removeContact();
@@ -33,74 +34,7 @@ function goBtnHandler() {
 
 // MENU FUNCTIONS
 function displayContacts() {
-  // for (let i = 0; i < array.length; i++) {
-
-  // }
-  saveContacts();
-  displayAll();
-}
-
-function addContact() {
-  outputEl.innerHTML = '';
-
-  textboxPEl = document.createElement('p');
-  textboxPEl.innerHTML = `<p>Please enter the contacts ${item}.</p>`;
-
-  textboxEl = document.createElement('input');
-  textboxEl.type = 'text';
-  console.log(textboxEl);
-
-  // Add everything to a div element
-  let divEl = document.createElement('div');
-  divEl.appendChild(textboxPEl);
-  divEl.appendChild(textboxEl);
-  outputEl.appendChild(divEl);
-
-  textboxEl.addEventListener('keydown', keydownHandler);
-
-  // tasks.push(newContact(userTask));
-  // saveTasks();
-  // displayTasks();
-  // tasksInputEl.value = '';
-}
-
-function removeContact() {
-  console.log('Remove Contact');
-}
-
-function displayByName() {
-  console.log('Display by Name');
-}
-
-function displayByCountry() {
-  console.log('Display by Country');
-}
-
-// Helper functions
-function initContacts() {
-  let jsonContacts = localStorage.getItem('contacts');
-  return JSON.parse(jsonContacts) ?? [];
-}
-
-// function displayTasks() {
-//   tasksEl.innerHTML = '';
-//   for (let i = 0; i < tasks.length; i++) {
-//     tasksEl.appendChild(getTaskHTML(tasks[i], i));
-//   }
-// }
-
-function newContact(index, name, email, phone, country) {
-  return {
-    index: index,
-    name: name,
-    email: email,
-    phone: phone,
-    country: country,
-  };
-}
-
-// Display all contacts in global contacts array
-function displayAll() {
+  // Get all contacts from array and display them in output element
   let outputStr = '';
   for (let i = 0; i < contacts.length; i++) {
     outputStr += getTaskHTMLStr(
@@ -114,11 +48,82 @@ function displayAll() {
   outputEl.innerHTML = outputStr;
 }
 
+function addContact() {
+  // Display input element then use ky handler to process data when enter is pressed
+  outputEl.innerHTML = '';
+
+  inputPEl = document.createElement('p');
+  inputPEl.innerHTML = `<p>Please enter the contacts ${item}.</p>`;
+
+  if (item !== 'phone number') {
+    inputEl = document.createElement('input');
+    inputEl.type = 'text';
+  } else {
+    inputEl = document.createElement('input');
+    inputEl.type = 'number';
+  }
+
+  // Add everything to a div element
+  let divEl = document.createElement('div');
+  divEl.appendChild(inputPEl);
+  divEl.appendChild(inputEl);
+  outputEl.appendChild(divEl);
+
+  // Add event listener to input
+  inputEl.addEventListener('keydown', addContactHandler);
+}
+
+function removeContact() {
+  outputEl.innerHTML = '';
+
+  inputPEl = document.createElement('p');
+  inputPEl.innerHTML = `<p>Please enter an index to remove.</p>`;
+
+  inputEl = document.createElement('input');
+  inputEl.type = 'number';
+
+  // Add everything to a div element
+  let divEl = document.createElement('div');
+  divEl.appendChild(inputPEl);
+  divEl.appendChild(inputEl);
+  outputEl.appendChild(divEl);
+
+  // Add event listener to input
+  inputEl.addEventListener('keydown', removeContactHandler);
+}
+
+function displayByName() {
+  console.log('Display by Name');
+}
+
+function displayByCountry() {
+  console.log('Display by Country');
+}
+
+// Helper functions
+// Get contacts from local storage
+function initContacts() {
+  let jsonContacts = localStorage.getItem('contacts');
+  return JSON.parse(jsonContacts) ?? [];
+}
+
+// Save contacts to local storage
 function saveContacts() {
   localStorage.setItem('contacts', JSON.stringify(contacts));
 }
 
-// Get html for given task
+// Return array object for new contact
+function newContact(index, name, email, phone, country) {
+  return {
+    index: index,
+    name: name,
+    email: email,
+    phone: phone,
+    country: country,
+  };
+}
+
+// Get html for given contact
 function getTaskHTMLStr(index, name, email, phone, country) {
   return `
   <div>
@@ -132,34 +137,44 @@ function getTaskHTMLStr(index, name, email, phone, country) {
 // Variables that must be declared outside function
 let instanceCounter = 0;
 let item = 'name';
-let name = '';
-let email = '';
-let phone = '';
-let country = '';
-function keydownHandler(e) {
-  let textboxVal = textboxEl.value;
-  if (e.keyCode === 13 && e.repeat === false && textboxVal !== '') {
+let nameIn = '';
+let emailIn = '';
+let phoneIn = '';
+let countryIn = '';
+
+// Key handler and add contact info to array
+function addContactHandler(e) {
+  let inputVal = inputEl.value;
+  // Ensure enter is pressed and input is not empty
+  if (
+    (e.keyCode === 13 && e.repeat === false && inputVal !== '') ||
+    inputVal === Number
+  ) {
+    // Check to see which item is current being asked for and update variable
     if (instanceCounter === 0) {
-      name = textboxVal;
-      item = 'email';
+      nameIn = inputVal;
+      item = 'email address';
       instanceCounter++;
-      textboxVal = '';
+      inputVal = '';
       addContact();
     } else if (instanceCounter === 1) {
-      email = textboxVal;
-      item = 'phone';
+      emailIn = inputVal;
+      item = 'phone number';
       instanceCounter++;
-      textboxVal = '';
+      inputVal = '';
       addContact();
     } else if (instanceCounter === 2) {
-      phone = textboxVal;
+      phoneIn = inputVal;
       item = 'country';
       instanceCounter++;
-      textboxVal = '';
+      inputVal = '';
       addContact();
     } else if (instanceCounter === 3) {
-      country = textboxVal;
-      contacts.push(newContact(contacts.length, name, email, phone, country));
+      countryIn = inputVal;
+      // Once all input fields are filled out add to array, save and reset HTML
+      contacts.push(
+        newContact(contacts.length, nameIn, emailIn, phoneIn, countryIn)
+      );
       saveContacts();
       instanceCounter = 0;
       outputEl.innerHTML += `<p>Contact added</p>`;
@@ -169,7 +184,21 @@ function keydownHandler(e) {
       item = 'name';
     }
   }
-  console.log(instanceCounter);
+}
+
+function removeContactHandler(e) {
+  let inputVal = inputEl.value;
+  if (
+    (e.keyCode === 13 && e.repeat === false && inputVal !== '') ||
+    inputVal === Number
+  ) {
+    for (let i = 0; i < contacts.length; i++) {
+      if (inputVal === i) {
+        contacts.splice(i, 1);
+      }
+    }
+  }
+  saveContacts();
 }
 
 // https://docs.google.com/document/d/1lJ8SckwihxTvA9Z7TiJtx1UKwz-HS8ErKThc5fChbDI/edit
