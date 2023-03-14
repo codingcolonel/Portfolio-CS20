@@ -93,7 +93,22 @@ function removeContact() {
 }
 
 function displayByName() {
-  console.log('Display by Name');
+  outputEl.innerHTML = '';
+
+  inputPEl = document.createElement('p');
+  inputPEl.innerHTML = `<p>Search a name to display</p>`;
+
+  inputEl = document.createElement('input');
+  inputEl.type = 'text';
+
+  // Add everything to a div element
+  let divEl = document.createElement('div');
+  divEl.appendChild(inputPEl);
+  divEl.appendChild(inputEl);
+  outputEl.appendChild(divEl);
+
+  // Add event listener to input
+  inputEl.addEventListener('keydown', searchContactHandler);
 }
 
 function displayByCountry() {
@@ -186,19 +201,39 @@ function addContactHandler(e) {
   }
 }
 
+// Key handler and remove contact info to array
 function removeContactHandler(e) {
-  let inputVal = inputEl.value;
-  if (
-    (e.keyCode === 13 && e.repeat === false && inputVal !== '') ||
-    inputVal === Number
-  ) {
-    for (let i = 0; i < contacts.length; i++) {
-      if (inputVal === i) {
-        contacts.splice(i, 1);
-      }
+  if (e.keyCode === 13 && e.repeat === false) {
+    let inputVal = inputEl.value;
+    try {
+      // Attempt to parse input value
+      inputVal = JSON.parse(inputVal);
+    } catch {
+      // Set value to null if textbox is empty
+      inputVal = null;
+    }
+    if (contacts[inputVal] !== undefined && inputVal !== null) {
+      // If index is valid remove from array and reset HTML
+      contacts.splice(inputVal, 1);
+      saveContacts();
+      outputEl.innerHTML += `<p>Contact removed</p>`;
+      setTimeout(() => {
+        outputEl.innerHTML = '';
+      }, 1000);
+    } else {
+      // If index is invalid output error and run function again
+      outputEl.innerHTML += `<p class='error'>Not a valid index</p>`;
+      setTimeout(() => {
+        removeContact();
+      }, 1000);
     }
   }
-  saveContacts();
 }
 
+function searchContactHandler(e) {
+  let inputVal = inputEl.value;
+  if (e.keyCode === 13 && e.repeat === false) {
+    console.log('hi');
+  }
+}
 // https://docs.google.com/document/d/1lJ8SckwihxTvA9Z7TiJtx1UKwz-HS8ErKThc5fChbDI/edit

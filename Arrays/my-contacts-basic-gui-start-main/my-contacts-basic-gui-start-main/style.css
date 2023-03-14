@@ -3,3 +3,8 @@ body {
   margin: auto;
   padding: 20px;
 }
+
+.error {
+  color: red;
+  font-size: 12px;
+}
