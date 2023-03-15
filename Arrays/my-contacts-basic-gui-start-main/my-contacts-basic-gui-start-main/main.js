@@ -29,6 +29,8 @@ function goBtnHandler() {
     displayByName();
   } else if (selection === 'display-country') {
     displayByCountry();
+  } else if (selection === 'display-email') {
+    displayByEmail();
   }
 }
 
@@ -96,7 +98,7 @@ function displayByName() {
   outputEl.innerHTML = '';
 
   inputPEl = document.createElement('p');
-  inputPEl.innerHTML = `<p>Search a name to display</p>`;
+  inputPEl.innerHTML = `<p>Search for a name to display</p>`;
 
   inputEl = document.createElement('input');
   inputEl.type = 'text';
@@ -108,14 +110,48 @@ function displayByName() {
   outputEl.appendChild(divEl);
 
   // Add event listener to input
-  inputEl.addEventListener('keydown', searchContactHandler);
+  inputEl.addEventListener('keydown', searchNameHandler);
 }
 
 function displayByCountry() {
-  console.log('Display by Country');
+  outputEl.innerHTML = '';
+
+  inputPEl = document.createElement('p');
+  inputPEl.innerHTML = `<p>Search for a Country to display</p>`;
+
+  inputEl = document.createElement('input');
+  inputEl.type = 'text';
+
+  // Add everything to a div element
+  let divEl = document.createElement('div');
+  divEl.appendChild(inputPEl);
+  divEl.appendChild(inputEl);
+  outputEl.appendChild(divEl);
+
+  // Add event listener to input
+  inputEl.addEventListener('keydown', searchCountryHandler);
 }
 
-// Helper functions
+function displayByEmail() {
+  outputEl.innerHTML = '';
+
+  inputPEl = document.createElement('p');
+  inputPEl.innerHTML = `<p>Search for an Email to display</p>`;
+
+  inputEl = document.createElement('input');
+  inputEl.type = 'text';
+
+  // Add everything to a div element
+  let divEl = document.createElement('div');
+  divEl.appendChild(inputPEl);
+  divEl.appendChild(inputEl);
+  outputEl.appendChild(divEl);
+
+  // Add event listener to input
+  inputEl.addEventListener('keydown', searchEmailHandler);
+}
+
+// HELPER FUNCTIONS
 // Get contacts from local storage
 function initContacts() {
   let jsonContacts = localStorage.getItem('contacts');
@@ -149,6 +185,13 @@ function getTaskHTMLStr(index, name, email, phone, country) {
   `;
 }
 
+function existsInArray(value, attribute) {
+  for (let i = 0; i < contacts.length; i++) {
+    if (contacts.[i].attribute)
+    
+  }
+}
+
 // Variables that must be declared outside function
 let instanceCounter = 0;
 let item = 'name';
@@ -157,7 +200,8 @@ let emailIn = '';
 let phoneIn = '';
 let countryIn = '';
 
-// Key handler and add contact info to array
+// KEY HANDLERS
+// Add contact info to array
 function addContactHandler(e) {
   let inputVal = inputEl.value;
   // Ensure enter is pressed and input is not empty
@@ -173,11 +217,20 @@ function addContactHandler(e) {
       inputVal = '';
       addContact();
     } else if (instanceCounter === 1) {
-      emailIn = inputVal;
-      item = 'phone number';
-      instanceCounter++;
-      inputVal = '';
-      addContact();
+      if (inputVal === ) {
+        emailIn = inputVal;
+        item = 'phone number';
+        instanceCounter++;
+        inputVal = '';
+        addContact();
+      } else {
+        outputEl.innerHTML += `<p class='error'>Email already exists</p>`;
+      setTimeout(() => {
+        inputVal = '';
+        addContact();
+      }, 1000);
+      }
+   
     } else if (instanceCounter === 2) {
       phoneIn = inputVal;
       item = 'country';
@@ -201,7 +254,7 @@ function addContactHandler(e) {
   }
 }
 
-// Key handler and remove contact info to array
+// Remove contact info to array
 function removeContactHandler(e) {
   if (e.keyCode === 13 && e.repeat === false) {
     let inputVal = inputEl.value;
@@ -230,10 +283,107 @@ function removeContactHandler(e) {
   }
 }
 
-function searchContactHandler(e) {
-  let inputVal = inputEl.value;
+// Search array for a name and display it
+function searchNameHandler(e) {
+  let inputVal = inputEl.value.toLowerCase();
+  let isInArray = false;
   if (e.keyCode === 13 && e.repeat === false) {
-    console.log('hi');
+    for (let i = 0; i < contacts.length; i++) {
+      if (contacts[i].name.toLowerCase() == inputVal) {
+        if (!isInArray) {
+          outputEl.innerHTML = '';
+        }
+        outputEl.innerHTML += getTaskHTMLStr(
+          i,
+          contacts[i].name,
+          contacts[i].email,
+          contacts[i].phone,
+          contacts[i].country
+        );
+        isInArray = true;
+      }
+      console.log(isInArray);
+      console.log(contacts[i].name);
+      console.log(i);
+    }
+    if (!isInArray || inputVal === '') {
+      // If search is invalid output error and run function again
+      outputEl.innerHTML += `<p class='error'>Invalid Name</p>`;
+      setTimeout(() => {
+        displayByName();
+      }, 1000);
+    }
   }
 }
+
+// Search array for a country and display it
+function searchCountryHandler(e) {
+  let inputVal = inputEl.value.toLowerCase();
+  console.log(inputVal);
+  let isInArray = false;
+  if (e.keyCode === 13 && e.repeat === false) {
+    for (let i = 0; i < contacts.length; i++) {
+      if (contacts[i].country.toLowerCase() == inputVal) {
+        if (!isInArray) {
+          outputEl.innerHTML = '';
+        }
+        outputEl.innerHTML += getTaskHTMLStr(
+          i,
+          contacts[i].name,
+          contacts[i].email,
+          contacts[i].phone,
+          contacts[i].country
+        );
+        console.log(isInArray);
+        isInArray = true;
+      }
+      // console.log(isInArray);
+      console.log(contacts[i].country);
+      console.log(i);
+    }
+    if (!isInArray || inputVal === '') {
+      // If search is invalid output error and run function again
+      outputEl.innerHTML += `<p class='error'>Invalid Country</p>`;
+      setTimeout(() => {
+        displayByCountry();
+      }, 1000);
+    }
+  }
+}
+
+// Search array for an email and display it
+function searchEmailHandler(e) {
+  let inputVal = inputEl.value;
+  console.log(inputVal);
+  let isInArray = false;
+  if (e.keyCode === 13 && e.repeat === false) {
+    for (let i = 0; i < contacts.length; i++) {
+      if (contacts[i].email.toLowerCase() == inputVal) {
+        if (!isInArray) {
+          outputEl.innerHTML = '';
+        }
+        outputEl.innerHTML += getTaskHTMLStr(
+          i,
+          contacts[i].name,
+          contacts[i].email,
+          contacts[i].phone,
+          contacts[i].country
+        );
+        console.log(isInArray);
+        isInArray = true;
+      }
+      // console.log(isInArray);
+      console.log(contacts[i].country);
+      console.log(i);
+    }
+    if (!isInArray || inputVal === '') {
+      // If search is invalid output error and run function again
+      outputEl.innerHTML += `<p class='error'>Invalid Email</p>`;
+      setTimeout(() => {
+        displayByEmail();
+      }, 1000);
+    }
+  }
+}
+
 // https://docs.google.com/document/d/1lJ8SckwihxTvA9Z7TiJtx1UKwz-HS8ErKThc5fChbDI/edit
