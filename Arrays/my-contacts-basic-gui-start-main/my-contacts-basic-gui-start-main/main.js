@@ -79,10 +79,10 @@ function removeContact() {
   outputEl.innerHTML = '';
 
   inputPEl = document.createElement('p');
-  inputPEl.innerHTML = `<p>Please enter an index to remove.</p>`;
+  inputPEl.innerHTML = `<p>Please enter an email to remove.</p>`;
 
   inputEl = document.createElement('input');
-  inputEl.type = 'number';
+  inputEl.type = 'text';
 
   // Add everything to a div element
   let divEl = document.createElement('div');
@@ -185,11 +185,14 @@ function getTaskHTMLStr(index, name, email, phone, country) {
   `;
 }
 
-function existsInArray(value, attribute) {
+function indexOfArrayObject(attribute, value) {
+  // let arrayName = contacts
   for (let i = 0; i < contacts.length; i++) {
-    if (contacts.[i].attribute)
-    
+    if (contacts[i][`${attribute}`] == value) {
+      return i;
+    }
   }
+  return -1;
 }
 
 // Variables that must be declared outside function
@@ -217,7 +220,7 @@ function addContactHandler(e) {
       inputVal = '';
       addContact();
     } else if (instanceCounter === 1) {
-      if (inputVal === ) {
+      if (indexOfArrayObject('email', inputVal) !== -1) {
         emailIn = inputVal;
         item = 'phone number';
         instanceCounter++;
@@ -225,12 +228,11 @@ function addContactHandler(e) {
         addContact();
       } else {
         outputEl.innerHTML += `<p class='error'>Email already exists</p>`;
-      setTimeout(() => {
-        inputVal = '';
-        addContact();
-      }, 1000);
+        setTimeout(() => {
+          inputVal = '';
+          addContact();
+        }, 1000);
       }
-   
     } else if (instanceCounter === 2) {
       phoneIn = inputVal;
       item = 'country';
@@ -258,16 +260,17 @@ function addContactHandler(e) {
 function removeContactHandler(e) {
   if (e.keyCode === 13 && e.repeat === false) {
     let inputVal = inputEl.value;
-    try {
-      // Attempt to parse input value
-      inputVal = JSON.parse(inputVal);
-    } catch {
-      // Set value to null if textbox is empty
-      inputVal = null;
-    }
-    if (contacts[inputVal] !== undefined && inputVal !== null) {
+    let arrayIndex = indexOfArrayObject('email', inputVal);
+    // try {
+    //   // Attempt to parse input value
+    //   inputVal = JSON.parse(inputVal);
+    // } catch {
+    //   // Set value to null if textbox is empty
+    //   inputVal = null;
+    // }
+    if (arrayIndex !== -1) {
       // If index is valid remove from array and reset HTML
-      contacts.splice(inputVal, 1);
+      contacts.splice(arrayIndex, 1);
       saveContacts();
       outputEl.innerHTML += `<p>Contact removed</p>`;
       setTimeout(() => {
