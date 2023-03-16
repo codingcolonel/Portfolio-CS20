@@ -6,6 +6,7 @@ let menuEl = document.getElementById('menu');
 let outputEl = document.getElementById('output');
 let inputPEl;
 let inputEl;
+let errorEl;
 
 // Global array
 let contacts = initContacts();
@@ -57,18 +58,16 @@ function addContact() {
   inputPEl = document.createElement('p');
   inputPEl.innerHTML = `<p>Please enter the contacts ${item}.</p>`;
 
-  if (item !== 'phone number') {
-    inputEl = document.createElement('input');
-    inputEl.type = 'text';
-  } else {
-    inputEl = document.createElement('input');
-    inputEl.type = 'number';
-  }
+  inputEl = document.createElement('input');
+  inputEl.type = 'text';
+
+  errorEl = document.createElement('p');
 
   // Add everything to a div element
   let divEl = document.createElement('div');
   divEl.appendChild(inputPEl);
   divEl.appendChild(inputEl);
+  divEl.appendChild(errorEl);
   outputEl.appendChild(divEl);
 
   // Add event listener to input
@@ -84,10 +83,13 @@ function removeContact() {
   inputEl = document.createElement('input');
   inputEl.type = 'text';
 
+  errorEl = document.createElement('p');
+
   // Add everything to a div element
   let divEl = document.createElement('div');
   divEl.appendChild(inputPEl);
   divEl.appendChild(inputEl);
+  divEl.appendChild(errorEl);
   outputEl.appendChild(divEl);
 
   // Add event listener to input
@@ -103,10 +105,13 @@ function displayByName() {
   inputEl = document.createElement('input');
   inputEl.type = 'text';
 
+  errorEl = document.createElement('p');
+
   // Add everything to a div element
   let divEl = document.createElement('div');
   divEl.appendChild(inputPEl);
   divEl.appendChild(inputEl);
+  divEl.appendChild(errorEl);
   outputEl.appendChild(divEl);
 
   // Add event listener to input
@@ -122,10 +127,13 @@ function displayByCountry() {
   inputEl = document.createElement('input');
   inputEl.type = 'text';
 
+  errorEl = document.createElement('p');
+
   // Add everything to a div element
   let divEl = document.createElement('div');
   divEl.appendChild(inputPEl);
   divEl.appendChild(inputEl);
+  divEl.appendChild(errorEl);
   outputEl.appendChild(divEl);
 
   // Add event listener to input
@@ -141,10 +149,13 @@ function displayByEmail() {
   inputEl = document.createElement('input');
   inputEl.type = 'text';
 
+  errorEl = document.createElement('p');
+
   // Add everything to a div element
   let divEl = document.createElement('div');
   divEl.appendChild(inputPEl);
   divEl.appendChild(inputEl);
+  divEl.appendChild(errorEl);
   outputEl.appendChild(divEl);
 
   // Add event listener to input
@@ -186,7 +197,6 @@ function getTaskHTMLStr(index, name, email, phone, country) {
 }
 
 function indexOfArrayObject(attribute, value) {
-  // let arrayName = contacts
   for (let i = 0; i < contacts.length; i++) {
     if (contacts[i][`${attribute}`] == value) {
       return i;
@@ -195,6 +205,7 @@ function indexOfArrayObject(attribute, value) {
   return -1;
 }
 
+// KEY HANDLERS
 // Variables that must be declared outside function
 let instanceCounter = 0;
 let item = 'name';
@@ -203,7 +214,6 @@ let emailIn = '';
 let phoneIn = '';
 let countryIn = '';
 
-// KEY HANDLERS
 // Add contact info to array
 function addContactHandler(e) {
   let inputVal = inputEl.value;
@@ -217,28 +227,33 @@ function addContactHandler(e) {
       nameIn = inputVal;
       item = 'email address';
       instanceCounter++;
-      inputVal = '';
-      addContact();
+      inputEl.value = '';
+      inputEl.addEventListener('keydown', addContactHandler);
+      inputPEl.innerHTML = `<p>Please enter the contacts ${item}.</p>`;
     } else if (instanceCounter === 1) {
-      if (indexOfArrayObject('email', inputVal) !== -1) {
+      if (indexOfArrayObject('email', inputVal) === -1) {
         emailIn = inputVal;
         item = 'phone number';
         instanceCounter++;
-        inputVal = '';
-        addContact();
+        inputEl.value = '';
+        inputEl.type = 'number';
+        inputEl.addEventListener('keydown', addContactHandler);
+        errorEl.innerHTML = ``;
+        inputPEl.innerHTML = `<p>Please enter the contacts ${item}.</p>`;
       } else {
-        outputEl.innerHTML += `<p class='error'>Email already exists</p>`;
-        setTimeout(() => {
-          inputVal = '';
-          addContact();
-        }, 1000);
+        // Display error if email already exists
+        inputEl.value = '';
+        inputEl.addEventListener('keydown', addContactHandler);
+        errorEl.innerHTML = `<p class='error'>Email already exists</p>`;
       }
     } else if (instanceCounter === 2) {
       phoneIn = inputVal;
       item = 'country';
       instanceCounter++;
-      inputVal = '';
-      addContact();
+      inputEl.value = '';
+      inputEl.type = 'text';
+      inputEl.addEventListener('keydown', addContactHandler);
+      inputPEl.innerHTML = `<p>Please enter the contacts ${item}.</p>`;
     } else if (instanceCounter === 3) {
       countryIn = inputVal;
       // Once all input fields are filled out add to array, save and reset HTML
@@ -261,27 +276,20 @@ function removeContactHandler(e) {
   if (e.keyCode === 13 && e.repeat === false) {
     let inputVal = inputEl.value;
     let arrayIndex = indexOfArrayObject('email', inputVal);
-    // try {
-    //   // Attempt to parse input value
-    //   inputVal = JSON.parse(inputVal);
-    // } catch {
-    //   // Set value to null if textbox is empty
-    //   inputVal = null;
-    // }
     if (arrayIndex !== -1) {
       // If index is valid remove from array and reset HTML
       contacts.splice(arrayIndex, 1);
       saveContacts();
+      errorEl.innerHTML = ``;
       outputEl.innerHTML += `<p>Contact removed</p>`;
       setTimeout(() => {
         outputEl.innerHTML = '';
       }, 1000);
     } else {
-      // If index is invalid output error and run function again
-      outputEl.innerHTML += `<p class='error'>Not a valid index</p>`;
-      setTimeout(() => {
-        removeContact();
-      }, 1000);
+      // If email is invalid display error
+      errorEl.innerHTML = `<p class='error'>Not a valid email</p>`;
+      inputEl.value = '';
+      inputEl.addEventListener('keydown', removeContactHandler);
     }
   }
 }
@@ -305,16 +313,12 @@ function searchNameHandler(e) {
         );
         isInArray = true;
       }
-      console.log(isInArray);
-      console.log(contacts[i].name);
-      console.log(i);
     }
     if (!isInArray || inputVal === '') {
-      // If search is invalid output error and run function again
-      outputEl.innerHTML += `<p class='error'>Invalid Name</p>`;
-      setTimeout(() => {
-        displayByName();
-      }, 1000);
+      // If name is invalid display error
+      errorEl.innerHTML = `<p class='error'>Invalid name</p>`;
+      inputEl.value = '';
+      inputEl.addEventListener('keydown', searchNameHandler);
     }
   }
 }
@@ -322,7 +326,6 @@ function searchNameHandler(e) {
 // Search array for a country and display it
 function searchCountryHandler(e) {
   let inputVal = inputEl.value.toLowerCase();
-  console.log(inputVal);
   let isInArray = false;
   if (e.keyCode === 13 && e.repeat === false) {
     for (let i = 0; i < contacts.length; i++) {
@@ -337,19 +340,14 @@ function searchCountryHandler(e) {
           contacts[i].phone,
           contacts[i].country
         );
-        console.log(isInArray);
         isInArray = true;
       }
-      // console.log(isInArray);
-      console.log(contacts[i].country);
-      console.log(i);
     }
     if (!isInArray || inputVal === '') {
-      // If search is invalid output error and run function again
-      outputEl.innerHTML += `<p class='error'>Invalid Country</p>`;
-      setTimeout(() => {
-        displayByCountry();
-      }, 1000);
+      // If country is invalid display error
+      errorEl.innerHTML = `<p class='error'>Invalid country</p>`;
+      inputEl.value = '';
+      inputEl.addEventListener('keydown', searchCountryHandler);
     }
   }
 }
@@ -357,7 +355,6 @@ function searchCountryHandler(e) {
 // Search array for an email and display it
 function searchEmailHandler(e) {
   let inputVal = inputEl.value;
-  console.log(inputVal);
   let isInArray = false;
   if (e.keyCode === 13 && e.repeat === false) {
     for (let i = 0; i < contacts.length; i++) {
@@ -372,21 +369,14 @@ function searchEmailHandler(e) {
           contacts[i].phone,
           contacts[i].country
         );
-        console.log(isInArray);
         isInArray = true;
       }
-      // console.log(isInArray);
-      console.log(contacts[i].country);
-      console.log(i);
     }
     if (!isInArray || inputVal === '') {
-      // If search is invalid output error and run function again
-      outputEl.innerHTML += `<p class='error'>Invalid Email</p>`;
-      setTimeout(() => {
-        displayByEmail();
-      }, 1000);
+      // If email is invalid display error
+      errorEl.innerHTML = `<p class='error'>Invalid email</p>`;
+      inputEl.value = '';
+      inputEl.addEventListener('keydown', searchEmailHandler);
     }
   }
 }
-
-// https://docs.google.com/document/d/1lJ8SckwihxTvA9Z7TiJtx1UKwz-HS8ErKThc5fChbDI/edit
