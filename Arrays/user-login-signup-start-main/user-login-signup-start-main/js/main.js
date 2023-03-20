@@ -16,15 +16,21 @@ function signUpHandler() {
   let confInEl = document.getElementById('confInSU');
   let errorEl = document.getElementById('errorSU');
 
-  if (userInEl.value === '' || passInEl === '' || confInEl === '') {
-    if (getindexOfArrayObject('username', userInEl.value) === -1) {
+  let userIndex = getindexOfArrayObject(info, 'username', userInEl.value);
+
+  if (userInEl.value !== '' && passInEl.value !== '' && confInEl.value !== '') {
+    if (userIndex === -1) {
       if (passInEl.value == confInEl.value) {
         info.push({
           username: userInEl.value,
           password: passInEl.value,
         });
         saveArray('info', info);
+        userInEl.innerHTML = '';
+        passInEl.innerHTML = '';
+        confInEl.innerHTML = '';
         errorEl.innerHTML = '';
+        signUpAlert();
       } else {
         errorEl.innerHTML = 'Error: Password does not match confirm password';
       }
@@ -40,5 +46,26 @@ function signUpHandler() {
 signInBtn.addEventListener('click', signInHandler);
 
 function signInHandler() {
-  console.log('Sign In Btn Clicked');
+  let userInEl = document.getElementById('userInSI');
+  let passInEl = document.getElementById('passInSI');
+  let errorEl = document.getElementById('errorSI');
+
+  let userIndex = getindexOfArrayObject(info, 'username', userInEl.value);
+
+  if (userInEl.value !== '' && passInEl.value !== '') {
+    if (userIndex !== -1) {
+      if (passInEl.value == info[userIndex]['password']) {
+        userInEl.innerHTML = '';
+        passInEl.innerHTML = '';
+        errorEl.innerHTML = '';
+        signInAlert();
+      } else {
+        errorEl.innerHTML = 'Error: Incorrect password';
+      }
+    } else {
+      errorEl.innerHTML = 'Error: Username does not exist';
+    }
+  } else {
+    errorEl.innerHTML = 'Error: Please fill all required fields';
+  }
 }

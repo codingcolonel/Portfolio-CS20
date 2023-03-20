@@ -65,6 +65,14 @@ a:hover {
   display: none;
 }
 
+#sign-up-alert {
+  display: none;
+}
+
+#sign-in-alert {
+  display: none;
+}
+
 .error {
   color: red;
   font-size: 15px;
