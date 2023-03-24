@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\CS-Projects\\Portfolio-CS20\\C#\\Hello World\\Hello World.csproj",
-      "projectName": "Hello World",
-      "projectPath": "F:\\CS-Projects\\Portfolio-CS20\\C#\\Hello World\\Hello World.csproj",
+      "projectUniqueName": "F:\\CS-Projects\\Portfolio-CS20\\C#\\Dist-Calc\\Dist-Calc.csproj",
+      "projectName": "Dist-Calc",
+      "projectPath": "F:\\CS-Projects\\Portfolio-CS20\\C#\\Dist-Calc\\Dist-Calc.csproj",
       "packagesPath": "C:\\Users\\e.vink\\.nuget\\packages\\",
-      "outputPath": "F:\\CS-Projects\\Portfolio-CS20\\C#\\Hello World\\obj\\",
+      "outputPath": "F:\\CS-Projects\\Portfolio-CS20\\C#\\Dist-Calc\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

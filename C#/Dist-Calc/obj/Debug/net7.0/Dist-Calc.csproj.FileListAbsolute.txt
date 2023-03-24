@@ -1,0 +1,15 @@
+F:\CS-Projects\Portfolio-CS20\C#\Dist-Calc\bin\Debug\net7.0\Dist-Calc.exe
+F:\CS-Projects\Portfolio-CS20\C#\Dist-Calc\bin\Debug\net7.0\Dist-Calc.deps.json
+F:\CS-Projects\Portfolio-CS20\C#\Dist-Calc\bin\Debug\net7.0\Dist-Calc.runtimeconfig.json
+F:\CS-Projects\Portfolio-CS20\C#\Dist-Calc\bin\Debug\net7.0\Dist-Calc.dll
+F:\CS-Projects\Portfolio-CS20\C#\Dist-Calc\bin\Debug\net7.0\Dist-Calc.pdb
+F:\CS-Projects\Portfolio-CS20\C#\Dist-Calc\obj\Debug\net7.0\Dist-Calc.csproj.AssemblyReference.cache
+F:\CS-Projects\Portfolio-CS20\C#\Dist-Calc\obj\Debug\net7.0\Dist-Calc.GeneratedMSBuildEditorConfig.editorconfig
+F:\CS-Projects\Portfolio-CS20\C#\Dist-Calc\obj\Debug\net7.0\Dist-Calc.AssemblyInfoInputs.cache
+F:\CS-Projects\Portfolio-CS20\C#\Dist-Calc\obj\Debug\net7.0\Dist-Calc.AssemblyInfo.cs
+F:\CS-Projects\Portfolio-CS20\C#\Dist-Calc\obj\Debug\net7.0\Dist-Calc.csproj.CoreCompileInputs.cache
+F:\CS-Projects\Portfolio-CS20\C#\Dist-Calc\obj\Debug\net7.0\Dist-Calc.dll
+F:\CS-Projects\Portfolio-CS20\C#\Dist-Calc\obj\Debug\net7.0\refint\Dist-Calc.dll
+F:\CS-Projects\Portfolio-CS20\C#\Dist-Calc\obj\Debug\net7.0\Dist-Calc.pdb
+F:\CS-Projects\Portfolio-CS20\C#\Dist-Calc\obj\Debug\net7.0\Dist-Calc.genruntimeconfig.cache
+F:\CS-Projects\Portfolio-CS20\C#\Dist-Calc\obj\Debug\net7.0\ref\Dist-Calc.dll
