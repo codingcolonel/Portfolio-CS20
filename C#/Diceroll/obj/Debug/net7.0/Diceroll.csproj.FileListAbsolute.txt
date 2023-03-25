@@ -1,0 +1,15 @@
+C:\Users\ethan\Desktop\Portfolio-CS20\C#\Diceroll\obj\Debug\net7.0\Diceroll.csproj.AssemblyReference.cache
+C:\Users\ethan\Desktop\Portfolio-CS20\C#\Diceroll\obj\Debug\net7.0\Diceroll.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ethan\Desktop\Portfolio-CS20\C#\Diceroll\obj\Debug\net7.0\Diceroll.AssemblyInfoInputs.cache
+C:\Users\ethan\Desktop\Portfolio-CS20\C#\Diceroll\obj\Debug\net7.0\Diceroll.AssemblyInfo.cs
+C:\Users\ethan\Desktop\Portfolio-CS20\C#\Diceroll\obj\Debug\net7.0\Diceroll.csproj.CoreCompileInputs.cache
+C:\Users\ethan\Desktop\Portfolio-CS20\C#\Diceroll\bin\Debug\net7.0\Diceroll.exe
+C:\Users\ethan\Desktop\Portfolio-CS20\C#\Diceroll\bin\Debug\net7.0\Diceroll.deps.json
+C:\Users\ethan\Desktop\Portfolio-CS20\C#\Diceroll\bin\Debug\net7.0\Diceroll.runtimeconfig.json
+C:\Users\ethan\Desktop\Portfolio-CS20\C#\Diceroll\bin\Debug\net7.0\Diceroll.dll
+C:\Users\ethan\Desktop\Portfolio-CS20\C#\Diceroll\bin\Debug\net7.0\Diceroll.pdb
+C:\Users\ethan\Desktop\Portfolio-CS20\C#\Diceroll\obj\Debug\net7.0\Diceroll.dll
+C:\Users\ethan\Desktop\Portfolio-CS20\C#\Diceroll\obj\Debug\net7.0\refint\Diceroll.dll
+C:\Users\ethan\Desktop\Portfolio-CS20\C#\Diceroll\obj\Debug\net7.0\Diceroll.pdb
+C:\Users\ethan\Desktop\Portfolio-CS20\C#\Diceroll\obj\Debug\net7.0\Diceroll.genruntimeconfig.cache
+C:\Users\ethan\Desktop\Portfolio-CS20\C#\Diceroll\obj\Debug\net7.0\ref\Diceroll.dll

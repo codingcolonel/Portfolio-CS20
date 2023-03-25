@@ -3,13 +3,9 @@
 # Import random library
 import random
 
-
-# Dice variables
-# dice1 = 0
-# dice2 = 0
-# sum = 0
-
 # Dice Roll Object
+
+
 class dice_roll():
     # Initialize object
     def __init__(self):
@@ -17,14 +13,6 @@ class dice_roll():
         self.dice2 = random.randrange(1, 7)
         self.sum = self.dice1 + self.dice2
 
-
-# d1 = dice_roll()
-# d2 = dice_roll()
-
-# print(d1.dice1, ',', d1.dice2,
-#       ' (sum:', d1.sum, ')')
-# print(d2.dice1, ',', d2.dice2,
-#       ' (sum:', d2.sum, ')')
 
 loop = True
 while (loop):
