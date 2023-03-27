@@ -12,6 +12,8 @@ class dice_roll():
         self.dice1 = random.randrange(1, 7)
         self.dice2 = random.randrange(1, 7)
         self.sum = self.dice1 + self.dice2
+        print(self.dice1, ',', self.dice2,
+              ' (sum:', self.sum, ')')
 
 
 loop = True
@@ -29,31 +31,23 @@ while (loop):
 
     # Effectuate menu selection
     if selection == '1':
-        # Create new object
-        obj = dice_roll()
-        print(obj.dice1, ',', obj.dice2, ' (sum:', obj.sum, ')')
+        dice_roll()
     elif selection == '2':
         for n in range(5):
-            # Create new object
-            obj = dice_roll()
-            print(obj.dice1, ',', obj.dice2, ' (sum:', obj.sum, ')')
+            dice_roll()
     elif selection == '3':
         num = int(input('How many rolls would you like? '))
         for n in range(num):
-            # Create new object
-            obj = dice_roll()
-            print(obj.dice1, ',', obj.dice2, ' (sum:', obj.sum, ')')
+            dice_roll()
     elif selection == '4':
         # Track how many rolls it takes
         numRolls = 1
 
-        # First roll must be runn before loop due to reference issues
+        # First roll must be run before loop due to reference issues
         obj = dice_roll()
-        print(obj.dice1, ',', obj.dice2, ' (sum:', obj.sum, ')')
 
-        while (obj.sum != 2):
+        while (obj.sum > 2):
             obj = dice_roll()
-            print(obj.dice1, ',', obj.dice2, ' (sum:', obj.sum, ')')
             numRolls += 1
 
         print('SNAKE EYES! It took', numRolls, ' rolls to get snake eyes.')
