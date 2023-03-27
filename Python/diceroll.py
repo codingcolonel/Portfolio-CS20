@@ -12,8 +12,7 @@ class dice_roll():
         self.dice1 = random.randrange(1, 7)
         self.dice2 = random.randrange(1, 7)
         self.sum = self.dice1 + self.dice2
-        print(self.dice1, ',', self.dice2,
-              ' (sum:', self.sum, ')')
+        print(self.dice1, ',', self.dice2, ' (sum:', self.sum, ')')
 
 
 loop = True
