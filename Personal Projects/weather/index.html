@@ -4,13 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Weather App</title>
-    <link href="diceroll.css" rel="stylesheet" type="text/css" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
 
     
-    <script defer src="main.js"></script>
-    <script defer src="gui.js"></script>
+    <script defer src="js/main.js"></script>
+    <script defer src="js/gui.js"></script>
   </head>
   <body>
+    <div id="top-screen">
   <h1>Weather App</h1>
 
     <div id="search-bar">
@@ -19,37 +20,45 @@
     </div>
 
     <div id="menu-options">
-      <ul>   
+      <!-- <ul>   
         <li><span id="current-link">CURRENT</span></li>
         <li><span id="hourly-link">HOURLY</span></li>
         <li><span id="36-hour-link">36 HOUR</span></li>
         <li><span id="7-day-link">7 DAYS</span></li>
-      </ul>
-    </div>
+      </ul> -->
 
+      <p><span class="fake-link" id="current-link">&nbsp&nbspCURRENT&nbsp&nbsp</span>
+      <span class="fake-link" id="hourly-link">&nbsp&nbspHOURLY&nbsp&nbsp</span>
+      <span class="fake-link" id="36-hour-link">&nbsp&nbsp36 HOUR&nbsp&nbsp</span>
+      <span class="fake-link" id="7-day-link">&nbsp&nbsp7 DAYS&nbsp&nbsp</span></p>
+    </div>
+  </div>
+
+  <div id="display-div">
     <h2>Current Weather in <span id="h1-location">-------</span></h1>
 
     <div class="weather-display" id="current-div">
-      <p></p>
+      <p>current</p>
     </div>
 
     
     <div class="weather-display" id="hourly-div">
-      <p></p>
+      <p>hourly</p>
     </div>
 
     
     <div class="weather-display" id="36-hour-div">
-      <p></p>
+      <p>36 hour</p>
     </div>
 
     
     <div class="weather-display" id="7-day-div">
-      <p></p>
+      <p>7 day</p>
     </div>
-    <a href="/current-weather" id="current-link">CURRENT</a>
+  </div>
+    <!-- <a href="/current-weather" id="current-link">CURRENT</a>
    <a href="/hourly-weather" id="hourly-link">HOURLY</a>
     <a href="/36-hour-weather" id="36-hour-link">36 HOUR</a>
-    <a href="/7-day-weather" id="7-day-link">7 DAYS</a>
+    <a href="/7-day-weather" id="7-day-link">7 DAYS</a> -->
   </body>
 </html>

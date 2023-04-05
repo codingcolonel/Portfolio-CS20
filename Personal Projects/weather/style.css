@@ -1,18 +1,43 @@
+* {
+  box-sizing: border-box;
+}
+
 body{
     text-align: center;
-  }
-  
-  canvas{
-    border: 1px solid gray;
-    margin-bottom: 0;
-  }
-  
-  p{
-    font-size: 100px;
-    font-family: monospace;
-    font-weight: bold;
-    margin-top: 50px
+    background-color: blue;
+    margin: 0;
   }
 
-  /* https://medium.com/@jlucas5280/rolling-dice-cfda66f2002d */
-  /* https://icodemag.com/3d-rolling-dice-css-javascript/ */
+  #top-screen{
+    border: solid black;
+  }
+  
+  #menu-options{
+    font-size: 20px;
+    font-family: monospace;
+    font-weight: bold;
+    background-color: aquamarine;
+    border-top: solid black;
+    margin-top: 10px;
+    padding: 2px 0px;
+  }
+
+  .weather-display{
+    display: none;
+  }
+
+  .fake-link:hover{
+    background-color: rgb(83, 168, 140);
+    cursor: pointer;
+  }
+
+  #display-div{
+    background: #eee;
+    width: 1200px;
+    height: 1000px;
+    padding: 10px 50px;
+    margin: 20px auto;
+    border-radius: 15px;
+    text-align: left;
+    /* display: none; */
+  }
