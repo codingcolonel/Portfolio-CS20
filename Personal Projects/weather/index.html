@@ -6,59 +6,68 @@
     <title>Weather App</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
 
-    
     <script defer src="js/main.js"></script>
     <script defer src="js/gui.js"></script>
   </head>
   <body>
     <div id="top-screen">
-  <h1>Weather App</h1>
+      <h1>Weather App</h1>
 
-    <div id="search-bar">
-      <input type="text" id="search-container" placeholder="Search city" />
-      <button id="search-btn">Search</button>
-    </div>
+      <div id="search-bar">
+        <input type="text" id="search-container" placeholder="Search city" />
+        <button id="search-btn">Search</button>
+      </div>
 
-    <div id="menu-options">
-      <!-- <ul>   
+      <div id="menu-options">
+        <!-- <ul>   
         <li><span id="current-link">CURRENT</span></li>
         <li><span id="hourly-link">HOURLY</span></li>
         <li><span id="36-hour-link">36 HOUR</span></li>
         <li><span id="7-day-link">7 DAYS</span></li>
       </ul> -->
 
-      <p><span class="fake-link" id="current-link">&nbsp&nbspCURRENT&nbsp&nbsp</span>
-      <span class="fake-link" id="hourly-link">&nbsp&nbspHOURLY&nbsp&nbsp</span>
-      <span class="fake-link" id="36-hour-link">&nbsp&nbsp36 HOUR&nbsp&nbsp</span>
-      <span class="fake-link" id="7-day-link">&nbsp&nbsp7 DAYS&nbsp&nbsp</span></p>
-    </div>
-  </div>
-
-  <div id="display-div">
-    <h2>Current Weather in <span id="h1-location">-------</span></h1>
-
-    <div class="weather-display" id="current-div">
-      <p>current</p>
-    </div>
-
-    
-    <div class="weather-display" id="hourly-div">
-      <p>hourly</p>
+        <p>
+          <span class="fake-link" id="current-link"
+            >&nbsp&nbspCURRENT&nbsp&nbsp</span
+          >
+          <span class="fake-link" id="hourly-link"
+            >&nbsp&nbspHOURLY&nbsp&nbsp</span
+          >
+          <span class="fake-link" id="36-hour-link"
+            >&nbsp&nbsp36 HOUR&nbsp&nbsp</span
+          >
+          <span class="fake-link" id="7-day-link"
+            >&nbsp&nbsp7 DAYS&nbsp&nbsp</span
+          >
+        </p>
+      </div>
     </div>
 
-    
-    <div class="weather-display" id="36-hour-div">
-      <p>36 hour</p>
-    </div>
+    <div id="display-div">
+      <h1>Current Weather in <span id="h1-location">-------</span></h1>
 
-    
-    <div class="weather-display" id="7-day-div">
-      <p>7 day</p>
+      <div class="weather-display" id="current-div">
+        <img id="weather-img" src="img/part-cloud.png" alt="thunder" />
+        <span id="temp">-20</span>
+        <span id="unit">°C</span>
+        <p>
+          <span>Feels like:</span>
+          <span id="feels-like-temp">0°C</span>
+        </p>
+        <span id="weather-condition">Partly Cloudy</span>
+      </div>
+
+      <div class="weather-display" id="hourly-div">
+        <p>hourly</p>
+      </div>
+
+      <div class="weather-display" id="36-hour-div">
+        <p>36 hour</p>
+      </div>
+
+      <div class="weather-display" id="7-day-div">
+        <p>7 day</p>
+      </div>
     </div>
-  </div>
-    <!-- <a href="/current-weather" id="current-link">CURRENT</a>
-   <a href="/hourly-weather" id="hourly-link">HOURLY</a>
-    <a href="/36-hour-weather" id="36-hour-link">36 HOUR</a>
-    <a href="/7-day-weather" id="7-day-link">7 DAYS</a> -->
   </body>
 </html>

@@ -26,6 +26,10 @@ body{
     display: none;
   }
 
+  .fake-link{
+    padding: 22px;
+  }
+
   .fake-link:hover{
     background-color: rgb(83, 168, 140);
     cursor: pointer;
@@ -34,10 +38,27 @@ body{
   #display-div{
     background: #eee;
     width: 1200px;
-    height: 1000px;
+    height: 400px;
     padding: 10px 50px;
     margin: 20px auto;
     border-radius: 15px;
     text-align: left;
     /* display: none; */
+  }
+
+  #temp{
+    font-size: 100px;
+    position: relative;
+    bottom: 20px;
+  }
+
+  #unit{
+    position: relative;
+    bottom: 75px;
+  }
+
+  #weather-img{
+    height: 120px;
+    width: 120px;
+    margin: 0px 5px;
   }
