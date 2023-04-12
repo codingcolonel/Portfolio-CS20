@@ -13,20 +13,15 @@
     <div id="top-screen">
       <h1>Weather App</h1>
 
-      <form action=""></form>
-      <div id="search-bar">
-        <input type="text" id="search-container" placeholder="Search city" />
-        <button id="search-btn">Search</button>
-      </div>
+      <form autocapitalize="off">
+        <div id="search-bar">
+          <input type="text" id="search-container" placeholder="Search city" />
+          <button id="search-btn">Search</button>
+          <p id="search-err" class="error"></p>
+        </div>
+      </form>
 
       <div id="menu-options">
-        <!-- <ul>   
-        <li><span id="current-link">CURRENT</span></li>
-        <li><span id="hourly-link">HOURLY</span></li>
-        <li><span id="36-hour-link">36 HOUR</span></li>
-        <li><span id="7-day-link">7 DAYS</span></li>
-      </ul> -->
-
         <p>
           <span class="fake-link" id="current-link"
             >&nbsp&nbspCURRENT&nbsp&nbsp</span
