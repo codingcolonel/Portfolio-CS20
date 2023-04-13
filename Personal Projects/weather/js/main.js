@@ -1,6 +1,7 @@
 // Data Arrays
 let cityData = [];
 let weather = [];
+let searchSuggestions = [];
 
 // Get city data
 fetch('../weather/data/worldcities.json')
@@ -32,16 +33,36 @@ fetch('../weather/data/worldcities.json')
 
 // HTML Elements
 let searchInEl = document.getElementById('search-container');
-let searchBtnEl = document.getElementById('search-btn');
+let clearBtnEl = document.getElementById('clear-icon');
 
 // Event listener
 searchInEl.addEventListener('keyup', keyUpHandler);
-searchBtnEl.addEventListener('click', displayCityOptions);
+clearBtnEl.addEventListener('click', clearSearchBar);
+
+function clearSearchBar() {
+  searchInEl.value = '';
+}
 
 function keyUpHandler(e) {
   if (e.key === 'Enter') {
     selectTopItemFromList(e);
+  } else {
+    searchSuggestions = [];
   }
+
+  if (searchInEl.value === '') {
+    for (let i = 0; i < 5; i++) {
+      searchSuggestions.push(cityData[i]);
+    }
+  } else {
+    let results = cityData.filter((Element) =>
+      Element.city.toLowerCase().includes(searchInEl.value.toLowerCase())
+    );
+    for (let i = 0; i < 5; i++) {
+      searchSuggestions.push(results[i]);
+    }
+  }
+  console.log(searchSuggestions);
 }
 
 function displayCityOptions(e) {
