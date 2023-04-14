@@ -70,10 +70,10 @@ body{
   }
 
   #search-bar{
-    position: relative;
+    /* position: relative; */
     display: flex;
     min-width: 100px;
-    left: 380px;
+    /* left: 380px; */
   }
 
   #search-container{
@@ -95,9 +95,17 @@ body{
 
   #clear-icon {
     position: absolute;
-    top: 10px;
-    right: 770px;
+    top: 92px;
+    /* top: 10 */
+    left: 475px;
+    /* left: 475 */
     width: 10px;
     cursor: pointer;
     /* <!-- visibility: hidden; --> */
   }
+
+  /* h1 {
+    text-align: left;
+    position: relative;
+    left: 525px;
+  } */

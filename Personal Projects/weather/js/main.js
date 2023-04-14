@@ -44,23 +44,44 @@ function clearSearchBar() {
 }
 
 function keyUpHandler(e) {
+  let searchInVal = searchInEl.value;
+
   if (e.key === 'Enter') {
     selectTopItemFromList(e);
   } else {
     searchSuggestions = [];
   }
 
-  if (searchInEl.value === '') {
+  if (searchInVal === '') {
     for (let i = 0; i < 5; i++) {
       searchSuggestions.push(cityData[i]);
     }
   } else {
-    let results = cityData.filter((Element) =>
-      Element.city.toLowerCase().includes(searchInEl.value.toLowerCase())
-    );
-    for (let i = 0; i < 5; i++) {
-      searchSuggestions.push(results[i]);
-    }
+    // let results = cityData.filter((Element) =>
+    // // if(Element.city[]) {
+    // //   Element.city.toLowerCase().includes(searchInEl.value.toLowerCase())
+    // // }
+    // );
+
+    let isAMatch = true;
+    cityData.forEach((element) => {
+      // Limit to 5 suggestions
+      if (searchSuggestions.length <= 4) {
+        for (let i = 0; i < searchInVal.length; i++) {
+          // console.log('ele' + element.city[i]);
+          // console.log('ele' + element.city);
+          // console.log('sea' + searchInVal[i]);
+          if (element.city[i].toLowerCase() !== searchInVal[i].toLowerCase()) {
+            isAMatch = false;
+            break;
+          }
+        }
+        if (isAMatch !== false) {
+          searchSuggestions.push(element);
+        }
+        isAMatch = true;
+      }
+    });
   }
   console.log(searchSuggestions);
 }
