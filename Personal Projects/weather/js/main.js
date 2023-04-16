@@ -15,39 +15,34 @@ fetch('../weather/data/worldcities.json')
     console.log('error: ' + err);
   });
 
-// API requests
-// let request = new XMLHttpRequest();
-// request.open(
-//   'GET',
-//   'http://api.openweathermap.org/geo/1.0/direct?q=Amsterdam,NL&limit=5&appid=e31d73c474dafc414b05ba01b6943b7a'
-// );
-// request.send();
-// request.onload = () => {
-//   console.log(request);
-//   if (request.status === 200) {
-//     cities = JSON.parse(request.response);
-//   } else {
-//     console.log(`error ${request.status} ${request.statusText}`);
-//   }
-// };
-
 // HTML Elements
 let searchInEl = document.getElementById('search-container');
 let clearBtnEl = document.getElementById('clear-icon');
+let autocomBoxEl = document.getElementById('autocom-box');
 
-// Event listener
-searchInEl.addEventListener('keyup', keyUpHandler);
+// Event listeners
+document.addEventListener('click', clearSearchSuggestions);
+searchInEl.addEventListener('keyup', displaySearchSuggestions);
+searchInEl.addEventListener('click', displaySearchSuggestions);
 clearBtnEl.addEventListener('click', clearSearchBar);
 
 function clearSearchBar() {
   searchInEl.value = '';
 }
 
-function keyUpHandler(e) {
+function clearSearchSuggestions(e) {
+  // console.log(e);
+  if (e.target.id !== 'search-container' && e.target.id !== 'clear-icon')
+    autocomBoxEl.innerHTML = '';
+}
+
+function displaySearchSuggestions(e) {
+  autocomBoxEl.innerHTML = '';
   let searchInVal = searchInEl.value;
 
   if (e.key === 'Enter') {
-    selectTopItemFromList(e);
+    // selectTopItemFromList(e);
+    return;
   } else {
     searchSuggestions = [];
   }
@@ -57,12 +52,6 @@ function keyUpHandler(e) {
       searchSuggestions.push(cityData[i]);
     }
   } else {
-    // let results = cityData.filter((Element) =>
-    // // if(Element.city[]) {
-    // //   Element.city.toLowerCase().includes(searchInEl.value.toLowerCase())
-    // // }
-    // );
-
     let isAMatch = true;
     cityData.forEach((element) => {
       // Limit to 5 suggestions
@@ -83,7 +72,22 @@ function keyUpHandler(e) {
       }
     });
   }
-  console.log(searchSuggestions);
+  let newUl = document.createElement('ul');
+  autocomBoxEl.appendChild(newUl);
+
+  for (let i = 0; i < searchSuggestions.length; i++) {
+    const e = searchSuggestions[i];
+    let newLi = document.createElement('li');
+    newLi.setAttribute('id', `${i}`);
+    newLi.innerHTML = `&nbsp${e.city}, ${e.admin_name}, ${e.country}`;
+    newLi.addEventListener('click', selectSearchSuggestion);
+    newUl.appendChild(newLi);
+    // list += `<li id='search${i}'>&nbsp${e.city}, ${e.admin_name}, ${e.country}</li>`;
+    // console.log(list);
+  }
+  // autocomBoxEl.innerHTML = `<ul>${list}</ul>`;
+
+  // console.log(searchSuggestions);
 }
 
 function displayCityOptions(e) {
@@ -96,8 +100,37 @@ function displayCityOptions(e) {
   }
 }
 
+function selectSearchSuggestion(e) {
+  let cityObj = searchSuggestions[JSON.parse(e.target.id)];
+  document.getElementById(
+    'h1-location'
+  ).innerHTML = `${cityObj.city}, ${cityObj.iso3}`;
+  // API requests
+  let request = new XMLHttpRequest();
+  request.open(
+    'GET',
+    `https://api.openweathermap.org/data/2.5/weather?lat=${cityObj.lat}&lon=${cityObj.lng}&exclude={part}&appid=e31d73c474dafc414b05ba01b6943b7a&units=metric`
+  );
+  request.send();
+  request.onload = () => {
+    console.log(request);
+    if (request.status === 200) {
+      weather = JSON.parse(request.response);
+      console.log(weather);
+    } else {
+      console.log(`error ${request.status} ${request.statusText}`);
+    }
+  };
+}
+
 // https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
 //
 // http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
 //
 // Key: e31d73c474dafc414b05ba01b6943b7a
+
+// to do
+// recent locations using local storage
+// modify algoritm
+// add functionality to suggestions
+// update weather using  API

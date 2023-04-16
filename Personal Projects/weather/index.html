@@ -13,14 +13,17 @@
     <div id="top-screen">
       <h1>Weather App</h1>
 
-      <form autocapitalize="off">
+      <div id="wrapper">
         <div id="search-bar">
           <img id="search-icon" src="img/search.png" alt="search" />
           <input type="text" id="search-container" placeholder="Search city" />
           <img id="clear-icon" src="img/clear.png" alt="clear" />
+          <div id="autocom-box">
+            <!-- list items are inserted from javascript -->
+          </div>
           <p id="search-err" class="error"></p>
         </div>
-      </form>
+      </div>
 
       <div id="menu-options">
         <p>
@@ -45,7 +48,7 @@
 
       <div class="weather-display" id="current-div">
         <img id="weather-img" src="img/part-cloud.png" alt="thunder" />
-        <span id="temp">-20</span>
+        <span id="temp">---</span>
         <span id="unit">°C</span>
         <p>
           <span>Feels like:</span>
