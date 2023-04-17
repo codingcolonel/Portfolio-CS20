@@ -41,7 +41,7 @@ function displaySearchSuggestions(e) {
   let searchInVal = searchInEl.value;
 
   if (e.key === 'Enter') {
-    // selectTopItemFromList(e);
+    // selectSearchSuggestion(e);
     return;
   } else {
     searchSuggestions = [];
@@ -52,10 +52,41 @@ function displaySearchSuggestions(e) {
       searchSuggestions.push(cityData[i]);
     }
   } else {
-    let isAMatch = true;
+    // let filterCityData = cityData.filter(
+    //   (element) => element.city.length === searchInVal.length
+    // );
+
+    // console.log(filterCityData);
+
+    // filterCityData.forEach((element) => {
+    //   let isAMatch = true;
+    //   for (let i = 0; i < searchInVal.length; i++) {
+    //     // console.log('ele' + element.city[i]);
+    //     // console.log('ele' + element.city);
+    //     // console.log('sea' + searchInVal[i]);
+    //     if (element.city[i].toLowerCase() !== searchInVal[i].toLowerCase()) {
+    //       isAMatch = false;
+    //       break;
+    //     }
+    //   }
+    //   if (isAMatch !== false) {
+    //     searchSuggestions.push(element);
+    //   }
+    //   isAMatch = true;
+    // });
+
+    // cityData.sort(function (a, b) {
+    //   // ASC  -> a.length - b.length
+    //   // DESC -> b.length - a.length
+    //   return a.length - b.length;
+    // });
+
+    // console.log(cityData)
+
+    // Limit to 5 suggestions
     cityData.forEach((element) => {
-      // Limit to 5 suggestions
       if (searchSuggestions.length <= 4) {
+        let isAMatch = true;
         for (let i = 0; i < searchInVal.length; i++) {
           // console.log('ele' + element.city[i]);
           // console.log('ele' + element.city);
@@ -117,10 +148,22 @@ function selectSearchSuggestion(e) {
     if (request.status === 200) {
       weather = JSON.parse(request.response);
       console.log(weather);
+      updateHTMLElements();
     } else {
       console.log(`error ${request.status} ${request.statusText}`);
     }
   };
+}
+
+function updateHTMLElements() {
+  let tempEl = document.getElementById('temp');
+  let imgEl = document.getElementById('weather-img');
+  let feelsLikeEl = document.getElementById('feels-like-temp');
+  let conditionEl = document.getElementById('weather-condition');
+
+  tempEl.innerHTML = `${Math.round(weather.main.temp)}`;
+  feelsLikeEl.innerHTML = `${Math.round(weather.main.temp)}`;
+  conditionEl.innerHTML = `${weather.weather[0].description}`;
 }
 
 // https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
@@ -129,8 +172,10 @@ function selectSearchSuggestion(e) {
 //
 // Key: e31d73c474dafc414b05ba01b6943b7a
 
+// https://openweathermap.org/weather-conditions
+
 // to do
 // recent locations using local storage
 // modify algoritm
-// add functionality to suggestions
-// update weather using  API
+// add functionality to suggestions - done
+// update weather using API
