@@ -41,7 +41,8 @@ function displaySearchSuggestions(e) {
   let searchInVal = searchInEl.value;
 
   if (e.key === 'Enter') {
-    // selectSearchSuggestion(e);
+    console.log('hi');
+    selectSearchSuggestion(e);
     return;
   } else {
     searchSuggestions = [];
@@ -132,7 +133,15 @@ function displayCityOptions(e) {
 }
 
 function selectSearchSuggestion(e) {
-  let cityObj = searchSuggestions[JSON.parse(e.target.id)];
+  let cityObj;
+  if (e.key === 'Enter') {
+    cityObj = searchSuggestions[0];
+  } else {
+    cityObj = searchSuggestions[JSON.parse(e.target.id)];
+  }
+
+  console.log(cityObj);
+
   document.getElementById(
     'h1-location'
   ).innerHTML = `${cityObj.city}, ${cityObj.iso3}`;
@@ -164,6 +173,32 @@ function updateHTMLElements() {
   tempEl.innerHTML = `${Math.round(weather.main.temp)}`;
   feelsLikeEl.innerHTML = `${Math.round(weather.main.temp)}`;
   conditionEl.innerHTML = `${weather.weather[0].description}`;
+
+  if (weather.weather[0].id < 300) {
+    imgEl.setAttribute('src', 'img/thunder.png');
+  } else if (weather.weather[0].id < 400) {
+    imgEl.setAttribute('src', 'img/drizzle.png');
+  } else if (weather.weather[0].id < 505) {
+    imgEl.setAttribute('src', 'img/rain.png');
+  } else if (weather.weather[0].id === 511) {
+    imgEl.setAttribute('src', 'img/freezing-rain.png');
+  } else if (weather.weather[0].id < 532) {
+    imgEl.setAttribute('src', 'img/shower-rain.png');
+  } else if (weather.weather[0].id < 623) {
+    imgEl.setAttribute('src', 'img/snow.png');
+  } else if (weather.weather[0].id < 782) {
+    imgEl.setAttribute('src', 'img/mist.png');
+  } else if (weather.weather[0].id === 800) {
+    imgEl.setAttribute('src', 'img/clear.png');
+  } else if (weather.weather[0].id === 801) {
+    imgEl.setAttribute('src', 'img/few-clouds.png');
+  } else if (weather.weather[0].id === 802) {
+    imgEl.setAttribute('src', 'img/scattered-clouds.png');
+  } else if (weather.weather[0].id === 803) {
+    imgEl.setAttribute('src', 'img/broken-clouds.png');
+  } else if (weather.weather[0].id === 804) {
+    imgEl.setAttribute('src', 'img/overcast-clouds.png');
+  }
 }
 
 // https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
