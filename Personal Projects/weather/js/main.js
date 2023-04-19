@@ -25,13 +25,15 @@ document.addEventListener('click', clearSearchSuggestions);
 searchInEl.addEventListener('keyup', displaySearchSuggestions);
 searchInEl.addEventListener('click', displaySearchSuggestions);
 clearBtnEl.addEventListener('click', clearSearchBar);
+clearBtnEl.addEventListener('click', displaySearchSuggestions);
 
 function clearSearchBar() {
+  // Clear the search bar on button press
   searchInEl.value = '';
 }
 
 function clearSearchSuggestions(e) {
-  // console.log(e);
+  // Clear search suggestions when clicked elsewhere
   if (e.target.id !== 'search-container' && e.target.id !== 'clear-icon')
     autocomBoxEl.innerHTML = '';
 }
@@ -40,6 +42,7 @@ function displaySearchSuggestions(e) {
   autocomBoxEl.innerHTML = '';
   let searchInVal = searchInEl.value;
 
+  // If Enter is pressed, select first suggestion
   if (e.key === 'Enter') {
     console.log('hi');
     selectSearchSuggestion(e);
@@ -48,55 +51,31 @@ function displaySearchSuggestions(e) {
     searchSuggestions = [];
   }
 
+  // If search bar is empty, suggest the first 5 cities in citydata
   if (searchInVal === '') {
     for (let i = 0; i < 5; i++) {
       searchSuggestions.push(cityData[i]);
     }
   } else {
-    // let filterCityData = cityData.filter(
-    //   (element) => element.city.length === searchInVal.length
-    // );
-
-    // console.log(filterCityData);
-
-    // filterCityData.forEach((element) => {
-    //   let isAMatch = true;
-    //   for (let i = 0; i < searchInVal.length; i++) {
-    //     // console.log('ele' + element.city[i]);
-    //     // console.log('ele' + element.city);
-    //     // console.log('sea' + searchInVal[i]);
-    //     if (element.city[i].toLowerCase() !== searchInVal[i].toLowerCase()) {
-    //       isAMatch = false;
-    //       break;
-    //     }
-    //   }
-    //   if (isAMatch !== false) {
-    //     searchSuggestions.push(element);
-    //   }
-    //   isAMatch = true;
-    // });
-
-    // cityData.sort(function (a, b) {
-    //   // ASC  -> a.length - b.length
-    //   // DESC -> b.length - a.length
-    //   return a.length - b.length;
-    // });
-
-    // console.log(cityData)
-
-    // Limit to 5 suggestions
+    // Sort exact matches first
     cityData.forEach((element) => {
+      // Limit to 5 suggestions
       if (searchSuggestions.length <= 4) {
         let isAMatch = true;
         for (let i = 0; i < searchInVal.length; i++) {
-          // console.log('ele' + element.city[i]);
-          // console.log('ele' + element.city);
-          // console.log('sea' + searchInVal[i]);
+          // Check if lengths are the same
+          if (searchInVal.length !== element.city.length) {
+            isAMatch = false;
+            break;
+          }
+
+          // Check if the letters match
           if (element.city[i].toLowerCase() !== searchInVal[i].toLowerCase()) {
             isAMatch = false;
             break;
           }
         }
+        // If everything matches, add to array
         if (isAMatch !== false) {
           searchSuggestions.push(element);
         }
@@ -104,6 +83,37 @@ function displaySearchSuggestions(e) {
       }
     });
   }
+
+  // If 5 Suggestions has not been reached add other suggestions until there is 5 or there is no remaining suggestions
+  cityData.forEach((element) => {
+    if (searchSuggestions.length <= 4) {
+      let isAMatch = true;
+      for (let i = 0; i < searchInVal.length; i++) {
+        // Check if the letters match
+        if (element.city[i].toLowerCase() !== searchInVal[i].toLowerCase()) {
+          isAMatch = false;
+          break;
+        }
+      }
+
+      // Make sure city hasn't already been added
+      if (
+        searchSuggestions.some(
+          (x) => x.city === element.city && x.admin_name === element.admin_name
+        ) === true
+      ) {
+        isAMatch = false;
+      }
+
+      // If everything matches, add to array
+      if (isAMatch !== false) {
+        searchSuggestions.push(element);
+      }
+      isAMatch = true;
+    }
+  });
+
+  // Add HTML elements
   let newUl = document.createElement('ul');
   autocomBoxEl.appendChild(newUl);
 
@@ -114,38 +124,27 @@ function displaySearchSuggestions(e) {
     newLi.innerHTML = `&nbsp${e.city}, ${e.admin_name}, ${e.country}`;
     newLi.addEventListener('click', selectSearchSuggestion);
     newUl.appendChild(newLi);
-    // list += `<li id='search${i}'>&nbsp${e.city}, ${e.admin_name}, ${e.country}</li>`;
-    // console.log(list);
-  }
-  // autocomBoxEl.innerHTML = `<ul>${list}</ul>`;
-
-  // console.log(searchSuggestions);
-}
-
-function displayCityOptions(e) {
-  let searchErrEl = document.getElementById('search-err');
-  console.log(e);
-  if (searchInEl.value !== '') {
-    console.log('yay');
-  } else {
-    searchErrEl.innerHTML = 'Error: Searchbox Empty';
   }
 }
 
 function selectSearchSuggestion(e) {
   let cityObj;
   if (e.key === 'Enter') {
+    // If Enter is pressed, select first suggestion
     cityObj = searchSuggestions[0];
   } else {
+    // Otherwise select suggestion that was clicked on
     cityObj = searchSuggestions[JSON.parse(e.target.id)];
   }
 
-  console.log(cityObj);
+  // console.log(cityObj);
 
+  // Update title
   document.getElementById(
     'h1-location'
   ).innerHTML = `${cityObj.city}, ${cityObj.iso3}`;
-  // API requests
+
+  // API request
   let request = new XMLHttpRequest();
   request.open(
     'GET',
@@ -155,25 +154,32 @@ function selectSearchSuggestion(e) {
   request.onload = () => {
     console.log(request);
     if (request.status === 200) {
+      // If no errors, add API data to array and call Update function
       weather = JSON.parse(request.response);
       console.log(weather);
       updateHTMLElements();
     } else {
+      // Output error in console
       console.log(`error ${request.status} ${request.statusText}`);
     }
   };
 }
 
 function updateHTMLElements() {
+  // Get HTML elements
   let tempEl = document.getElementById('temp');
   let imgEl = document.getElementById('weather-img');
   let feelsLikeEl = document.getElementById('feels-like-temp');
   let conditionEl = document.getElementById('weather-condition');
 
+  // Update temperature
   tempEl.innerHTML = `${Math.round(weather.main.temp)}`;
+  // Update feels like temperature
   feelsLikeEl.innerHTML = `${Math.round(weather.main.temp)}`;
+  // Update weather condition
   conditionEl.innerHTML = `${weather.weather[0].description}`;
 
+  // Update image based on weather condition
   if (weather.weather[0].id < 300) {
     imgEl.setAttribute('src', 'img/thunder.png');
   } else if (weather.weather[0].id < 400) {
@@ -201,6 +207,12 @@ function updateHTMLElements() {
   }
 }
 
+// window.requestAnimationFrame(test);
+// function test() {
+//   console.log(searchSuggestions.length);
+//   window.requestAnimationFrame(test);
+// }
+
 // https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
 //
 // http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
@@ -211,6 +223,6 @@ function updateHTMLElements() {
 
 // to do
 // recent locations using local storage
-// modify algoritm
+// modify algoritm - done
 // add functionality to suggestions - done
-// update weather using API
+// update weather using API -done
