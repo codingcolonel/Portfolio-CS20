@@ -2,6 +2,8 @@
 let cityData = [];
 let weather = [];
 let searchSuggestions = [];
+let recentCities = initArray('recentCities');
+// let test1;
 
 // Get city data
 fetch('../weather/data/worldcities.json')
@@ -27,6 +29,17 @@ searchInEl.addEventListener('click', displaySearchSuggestions);
 clearBtnEl.addEventListener('click', clearSearchBar);
 clearBtnEl.addEventListener('click', displaySearchSuggestions);
 
+if (navigator.geolocation) {
+  console.log(navigator.geolocation.getCurrentPosition(processLocation));
+} else {
+  x.innerHTML = 'Geolocation is not supported by this browser.';
+}
+
+function processLocation(position) {
+  selectSearchSuggestion(position);
+  // test1 = position;
+}
+
 function clearSearchBar() {
   // Clear the search bar on button press
   searchInEl.value = '';
@@ -51,10 +64,18 @@ function displaySearchSuggestions(e) {
     searchSuggestions = [];
   }
 
-  // If search bar is empty, suggest the first 5 cities in citydata
+  // If search bar is empty, get the most recent picked locations from local storage
   if (searchInVal === '') {
-    for (let i = 0; i < 5; i++) {
-      searchSuggestions.push(cityData[i]);
+    if (recentCities.length === 0) {
+      for (let i = 0; i < 5; i++) {
+        searchSuggestions.push(cityData[i]);
+      }
+    } else {
+      for (let i = 0; i < 5; i++) {
+        if (recentCities[i] !== undefined) {
+          searchSuggestions.push(recentCities[i]);
+        }
+      }
     }
   } else {
     // Sort exact matches first
@@ -82,36 +103,37 @@ function displaySearchSuggestions(e) {
         isAMatch = true;
       }
     });
-  }
 
-  // If 5 Suggestions has not been reached add other suggestions until there is 5 or there is no remaining suggestions
-  cityData.forEach((element) => {
-    if (searchSuggestions.length <= 4) {
-      let isAMatch = true;
-      for (let i = 0; i < searchInVal.length; i++) {
-        // Check if the letters match
-        if (element.city[i].toLowerCase() !== searchInVal[i].toLowerCase()) {
-          isAMatch = false;
-          break;
+    // If 5 Suggestions has not been reached add other suggestions until there is 5 or there is no remaining suggestions
+    cityData.forEach((element) => {
+      if (searchSuggestions.length <= 4) {
+        let isAMatch = true;
+        for (let i = 0; i < searchInVal.length; i++) {
+          // Check if the letters match
+          if (element.city[i].toLowerCase() !== searchInVal[i].toLowerCase()) {
+            isAMatch = false;
+            break;
+          }
         }
-      }
 
-      // Make sure city hasn't already been added
-      if (
-        searchSuggestions.some(
-          (x) => x.city === element.city && x.admin_name === element.admin_name
-        ) === true
-      ) {
-        isAMatch = false;
-      }
+        // Make sure city hasn't already been added
+        if (
+          searchSuggestions.some(
+            (x) =>
+              x.city === element.city && x.admin_name === element.admin_name
+          ) === true
+        ) {
+          isAMatch = false;
+        }
 
-      // If everything matches, add to array
-      if (isAMatch !== false) {
-        searchSuggestions.push(element);
+        // If everything matches, add to array
+        if (isAMatch !== false) {
+          searchSuggestions.push(element);
+        }
+        isAMatch = true;
       }
-      isAMatch = true;
-    }
-  });
+    });
+  }
 
   // Add HTML elements
   let newUl = document.createElement('ul');
@@ -128,16 +150,23 @@ function displaySearchSuggestions(e) {
 }
 
 function selectSearchSuggestion(e) {
+  console.log(e);
   let cityObj;
   if (e.key === 'Enter') {
     // If Enter is pressed, select first suggestion
     cityObj = searchSuggestions[0];
+  } else if (e.coords !== undefined) {
+    cityobj = e;
+    // FIX FORMAT
   } else {
     // Otherwise select suggestion that was clicked on
     cityObj = searchSuggestions[JSON.parse(e.target.id)];
   }
+  console.log(cityObj);
 
-  // console.log(cityObj);
+  // Save Selected City to Local Storage
+  recentCities.unshift(cityObj);
+  saveArray('recentCities', recentCities);
 
   // Update title
   document.getElementById(
@@ -222,7 +251,9 @@ function updateHTMLElements() {
 // https://openweathermap.org/weather-conditions
 
 // to do
-// recent locations using local storage
+// recent locations using local storage - done
 // modify algoritm - done
 // add functionality to suggestions - done
-// update weather using API -done
+// update weather using API - done
+// get user location
+// mystery error
