@@ -21,6 +21,32 @@ function getindexOfArrayObject(attribute, value, array) {
   return -1;
 }
 
+function closestValue(num, arr) {
+  var curr = arr[0];
+  var diff = Math.abs(num - curr);
+  for (var i = 0; i < arr.length; i++) {
+    var newdiff = Math.abs(num - arr[i]);
+    if (newdiff < diff) {
+      diff = newdiff;
+      curr = arr[i];
+    }
+  }
+  return curr;
+}
+
+function closestAttributeValue(num, arr, attribute) {
+  var curr = arr[0];
+  var diff = Math.abs(num - curr);
+  for (var i = 0; i < arr.length; i++) {
+    var newdiff = Math.abs(num - arr[i].JSON.parse(attribute));
+    if (newdiff < diff) {
+      diff = newdiff;
+      curr = arr[i].JSON.parse(attribute);
+    }
+  }
+  return curr;
+}
+
 // RANDOM LIBRARY
 // Return a random decimbal b/t low (inclusive) and high (exclusive)
 function randomDec(low, high) {

@@ -21,6 +21,48 @@ function getindexOfArrayObject(attribute, value, array) {
   return -1;
 }
 
+function closestValue(num, arr) {
+  var curr = arr[0];
+  var diff = Math.abs(num - curr);
+  for (var i = 0; i < arr.length; i++) {
+    var newdiff = Math.abs(num - arr[i]);
+    if (newdiff < diff) {
+      diff = newdiff;
+      curr = arr[i];
+    }
+  }
+  return curr;
+}
+
+function closestPropertyValue(num, arr, attribute) {
+  var curr = arr[0];
+  var diff = Math.abs(num - curr);
+  for (var i = 0; i < arr.length; i++) {
+    var newdiff = Math.abs(num - arr[i].JSON.parse(attribute));
+    if (newdiff < diff) {
+      diff = newdiff;
+      curr = arr[i].JSON.parse(attribute);
+    }
+  }
+  return curr;
+}
+
+function closestCoordinateInArray(lat, lng, arr) {
+  let minDistance = 10000000;
+  let closestPoint;
+  for (let i = 0; i < arr.length; i++) {
+    distance = Math.sqrt(
+      (lat - arr[i].lat) * (lat - arr[i].lat) +
+        (lng - arr[i].lng) * (lng - arr[i].lng)
+    );
+    if (distance < minDistance) {
+      minDistance = distance;
+      closestPoint = arr[i];
+    }
+  }
+  return closestPoint;
+}
+
 // RANDOM LIBRARY
 // Return a random decimbal b/t low (inclusive) and high (exclusive)
 function randomDec(low, high) {

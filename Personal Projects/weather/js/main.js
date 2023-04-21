@@ -30,9 +30,9 @@ clearBtnEl.addEventListener('click', clearSearchBar);
 clearBtnEl.addEventListener('click', displaySearchSuggestions);
 
 if (navigator.geolocation) {
-  console.log(navigator.geolocation.getCurrentPosition(processLocation));
+  navigator.geolocation.getCurrentPosition(processLocation);
 } else {
-  x.innerHTML = 'Geolocation is not supported by this browser.';
+  console.log('Geolocation is not supported by this browser.');
 }
 
 function processLocation(position) {
@@ -57,7 +57,7 @@ function displaySearchSuggestions(e) {
 
   // If Enter is pressed, select first suggestion
   if (e.key === 'Enter') {
-    console.log('hi');
+    // console.log('hi');
     selectSearchSuggestion(e);
     return;
   } else {
@@ -140,38 +140,43 @@ function displaySearchSuggestions(e) {
   autocomBoxEl.appendChild(newUl);
 
   for (let i = 0; i < searchSuggestions.length; i++) {
-    const e = searchSuggestions[i];
+    const element = searchSuggestions[i];
     let newLi = document.createElement('li');
     newLi.setAttribute('id', `${i}`);
-    newLi.innerHTML = `&nbsp${e.city}, ${e.admin_name}, ${e.country}`;
+    newLi.innerHTML = `&nbsp${element.city}, ${element.admin_name}, ${element.country}`;
     newLi.addEventListener('click', selectSearchSuggestion);
     newUl.appendChild(newLi);
   }
 }
 
 function selectSearchSuggestion(e) {
-  console.log(e);
+  // console.log(e);
   let cityObj;
   if (e.key === 'Enter') {
     // If Enter is pressed, select first suggestion
     cityObj = searchSuggestions[0];
   } else if (e.coords !== undefined) {
-    cityobj = e;
+    // cityData[closestAttributeValue()]
+    let closest = closestCoordinateInArray(
+      e.coords.latitude,
+      e.coords.longitude,
+      cityData
+    );
+    console.log(closest);
+    cityObj = {
+      lat: e.coords.latitude,
+      lng: e.coords.longitude,
+    };
     // FIX FORMAT
   } else {
     // Otherwise select suggestion that was clicked on
     cityObj = searchSuggestions[JSON.parse(e.target.id)];
   }
-  console.log(cityObj);
+  // console.log(cityObj);
 
   // Save Selected City to Local Storage
   recentCities.unshift(cityObj);
   saveArray('recentCities', recentCities);
-
-  // Update title
-  document.getElementById(
-    'h1-location'
-  ).innerHTML = `${cityObj.city}, ${cityObj.iso3}`;
 
   // API request
   let request = new XMLHttpRequest();
@@ -200,6 +205,10 @@ function updateHTMLElements() {
   let imgEl = document.getElementById('weather-img');
   let feelsLikeEl = document.getElementById('feels-like-temp');
   let conditionEl = document.getElementById('weather-condition');
+  let citySpanEl = document.getElementById('h1-location');
+
+  // Update title
+  citySpanEl.innerHTML = `${weather.name}, ${weather.sys.country}`;
 
   // Update temperature
   tempEl.innerHTML = `${Math.round(weather.main.temp)}`;
