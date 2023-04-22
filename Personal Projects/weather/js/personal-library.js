@@ -48,7 +48,7 @@ function closestPropertyValue(num, arr, attribute) {
 }
 
 function closestCoordinateInArray(lat, lng, arr) {
-  let minDistance = 10000000;
+  let minDistance = 10000;
   let closestPoint;
   for (let i = 0; i < arr.length; i++) {
     distance = Math.sqrt(

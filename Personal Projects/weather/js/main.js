@@ -3,6 +3,7 @@ let cityData = [];
 let weather = [];
 let searchSuggestions = [];
 let recentCities = initArray('recentCities');
+let cityObj;
 // let test1;
 
 // Get city data
@@ -36,7 +37,15 @@ if (navigator.geolocation) {
 }
 
 function processLocation(position) {
-  selectSearchSuggestion(position);
+  let cityCoords = closestCoordinateInArray(
+    position.coords.latitude,
+    position.coords.longitude,
+    cityData
+  );
+  setTimeout(() => {
+    cityObj = cityCoords;
+    selectSearchSuggestion('e');
+  }, 1000);
   // test1 = position;
 }
 
@@ -151,28 +160,28 @@ function displaySearchSuggestions(e) {
 
 function selectSearchSuggestion(e) {
   // console.log(e);
-  let cityObj;
   if (e.key === 'Enter') {
     // If Enter is pressed, select first suggestion
     cityObj = searchSuggestions[0];
   } else if (e.coords !== undefined) {
     // cityData[closestAttributeValue()]
-    let closest = closestCoordinateInArray(
-      e.coords.latitude,
-      e.coords.longitude,
-      cityData
-    );
-    console.log(closest);
-    cityObj = {
-      lat: e.coords.latitude,
-      lng: e.coords.longitude,
-    };
+    // let closest = closestCoordinateInArray(
+    //   e.coords.latitude,
+    //   e.coords.longitude,
+    //   cityData
+    // );
+    // console.log(closest);
+    // cityObj = {
+    //   lat: e.coords.latitude,
+    //   lng: e.coords.longitude,
+    // };
+    cityObj = e;
     // FIX FORMAT
-  } else {
+  } else if (e.target) {
     // Otherwise select suggestion that was clicked on
     cityObj = searchSuggestions[JSON.parse(e.target.id)];
   }
-  // console.log(cityObj);
+  console.log(cityObj);
 
   // Save Selected City to Local Storage
   recentCities.unshift(cityObj);
@@ -208,7 +217,7 @@ function updateHTMLElements() {
   let citySpanEl = document.getElementById('h1-location');
 
   // Update title
-  citySpanEl.innerHTML = `${weather.name}, ${weather.sys.country}`;
+  citySpanEl.innerHTML = `${cityObj.city}, ${cityObj.iso3}`;
 
   // Update temperature
   tempEl.innerHTML = `${Math.round(weather.main.temp)}`;
