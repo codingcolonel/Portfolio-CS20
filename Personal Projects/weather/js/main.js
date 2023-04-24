@@ -3,7 +3,6 @@ let cityData = [];
 let weather = [];
 let searchSuggestions = [];
 let recentCities = initArray('recentCities');
-let cityObj;
 // let test1;
 
 // Get city data
@@ -31,22 +30,40 @@ clearBtnEl.addEventListener('click', clearSearchBar);
 clearBtnEl.addEventListener('click', displaySearchSuggestions);
 
 if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(processLocation);
+  navigator.geolocation.getCurrentPosition(getLocation);
 } else {
   console.log('Geolocation is not supported by this browser.');
 }
 
 function processLocation(position) {
-  let cityCoords = closestCoordinateInArray(
-    position.coords.latitude,
-    position.coords.longitude,
-    cityData
-  );
-  setTimeout(() => {
-    cityObj = cityCoords;
-    selectSearchSuggestion('e');
-  }, 1000);
+  console.log(position);
+  return new Promise(function (resolve, reject) {
+    setTimeout(() => {
+      resolve(
+        closestCoordinateInArray(
+          position.coords.latitude,
+          position.coords.longitude,
+          cityData
+        )
+      );
+    }, 1000);
+  });
+
+  // setTimeout(() => {
+  //   cityObj = cityCoords;
+  //   selectSearchSuggestion('e');
+  // }, 1000);
   // test1 = position;
+}
+
+function getLocation(position) {
+  const promise = processLocation(position);
+  promise.then(onFulfilled);
+}
+
+function onFulfilled(city) {
+  // cityObj = ;
+  selectSearchSuggestion(city);
 }
 
 function clearSearchBar() {
@@ -159,33 +176,38 @@ function displaySearchSuggestions(e) {
 }
 
 function selectSearchSuggestion(e) {
-  // console.log(e);
+  let cityObj;
   if (e.key === 'Enter') {
     // If Enter is pressed, select first suggestion
     cityObj = searchSuggestions[0];
-  } else if (e.coords !== undefined) {
-    // cityData[closestAttributeValue()]
-    // let closest = closestCoordinateInArray(
-    //   e.coords.latitude,
-    //   e.coords.longitude,
-    //   cityData
-    // );
-    // console.log(closest);
-    // cityObj = {
-    //   lat: e.coords.latitude,
-    //   lng: e.coords.longitude,
-    // };
-    cityObj = e;
-    // FIX FORMAT
   } else if (e.target) {
     // Otherwise select suggestion that was clicked on
     cityObj = searchSuggestions[JSON.parse(e.target.id)];
+  } else if (e.city !== undefined) {
+    cityObj = e;
   }
-  console.log(cityObj);
 
-  // Save Selected City to Local Storage
-  recentCities.unshift(cityObj);
-  saveArray('recentCities', recentCities);
+  // Make sure city doesn't exist in local storage
+  let isInArray = false;
+  for (let i = 0; i < recentCities.length; i++) {
+    const element = recentCities[i];
+    if (
+      cityObj.city === element.city &&
+      cityObj.admin_name === element.admin_name
+    ) {
+      // If city already exists, remove it and add it to the start of the array
+      recentCities.splice(i, 1);
+      recentCities.unshift(cityObj);
+      saveArray('recentCities', recentCities);
+      isInArray = true;
+    }
+  }
+
+  if (isInArray === false) {
+    // Save Selected City to Local Storage
+    recentCities.unshift(cityObj);
+    saveArray('recentCities', recentCities);
+  }
 
   // API request
   let request = new XMLHttpRequest();
@@ -200,7 +222,7 @@ function selectSearchSuggestion(e) {
       // If no errors, add API data to array and call Update function
       weather = JSON.parse(request.response);
       console.log(weather);
-      updateHTMLElements();
+      updateHTMLElements(cityObj);
     } else {
       // Output error in console
       console.log(`error ${request.status} ${request.statusText}`);
@@ -208,7 +230,7 @@ function selectSearchSuggestion(e) {
   };
 }
 
-function updateHTMLElements() {
+function updateHTMLElements(cityObj) {
   // Get HTML elements
   let tempEl = document.getElementById('temp');
   let imgEl = document.getElementById('weather-img');
@@ -254,12 +276,6 @@ function updateHTMLElements() {
   }
 }
 
-// window.requestAnimationFrame(test);
-// function test() {
-//   console.log(searchSuggestions.length);
-//   window.requestAnimationFrame(test);
-// }
-
 // https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
 //
 // http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
@@ -273,5 +289,5 @@ function updateHTMLElements() {
 // modify algoritm - done
 // add functionality to suggestions - done
 // update weather using API - done
-// get user location
-// mystery error
+// get user location - done finally
+// mystery error (ex. was) - ???
