@@ -125,3 +125,23 @@ body{
     background: #d3d3d3;
     cursor: pointer;
   }
+
+  #display-div {
+    font-family: 'Courier New', Courier, monospace;
+    margin: auto;
+  }
+
+  #unit-selection {
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  #celsius {
+    background-color: aqua;
+    border: 4px solid black;
+  }
+
+  #farenheit {
+    background-color: red;
+    border: 1px solid black;
+  }

@@ -1,9 +1,13 @@
+// WEATHER WEBSITE USING OPEN WEATHER MAP API
+
 // Data Arrays
 let cityData = [];
 let weather = [];
 let searchSuggestions = [];
 let recentCities = initArray('recentCities');
-// let test1;
+
+// Global variables
+let currentUnit = 'metric';
 
 // Get city data
 fetch('../weather/data/worldcities.json')
@@ -21,6 +25,8 @@ fetch('../weather/data/worldcities.json')
 let searchInEl = document.getElementById('search-container');
 let clearBtnEl = document.getElementById('clear-icon');
 let autocomBoxEl = document.getElementById('autocom-box');
+let celsiusEl = document.getElementById('celsius');
+let farenheitEl = document.getElementById('farenheit');
 
 // Event listeners
 document.addEventListener('click', clearSearchSuggestions);
@@ -28,7 +34,10 @@ searchInEl.addEventListener('keyup', displaySearchSuggestions);
 searchInEl.addEventListener('click', displaySearchSuggestions);
 clearBtnEl.addEventListener('click', clearSearchBar);
 clearBtnEl.addEventListener('click', displaySearchSuggestions);
+celsiusEl.addEventListener('click', changeUnits);
+farenheitEl.addEventListener('click', changeUnits);
 
+// If geolocation is supported get user position
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(getLocation);
 } else {
@@ -36,6 +45,7 @@ if (navigator.geolocation) {
 }
 
 function processLocation(position) {
+  // Find the city that's closest to provided coordinates
   console.log(position);
   return new Promise(function (resolve, reject) {
     setTimeout(() => {
@@ -48,27 +58,41 @@ function processLocation(position) {
       );
     }, 1000);
   });
-
-  // setTimeout(() => {
-  //   cityObj = cityCoords;
-  //   selectSearchSuggestion('e');
-  // }, 1000);
-  // test1 = position;
 }
 
 function getLocation(position) {
+  // Create new promise
   const promise = processLocation(position);
   promise.then(onFulfilled);
 }
 
 function onFulfilled(city) {
-  // cityObj = ;
+  // Once promise is fulfilled, display weather at current location
   selectSearchSuggestion(city);
 }
 
 function clearSearchBar() {
   // Clear the search bar on button press
   searchInEl.value = '';
+}
+
+function changeUnits(e) {
+  // If button is pressed change units and update weather
+  if (e.target.id === 'celsius') {
+    currentUnit = 'metric';
+    celsiusEl.style.borderWidth = '4px';
+    farenheitEl.style.borderWidth = '1px';
+    document.getElementById('unit').innerHTML = '°C';
+    document.getElementById('fl-unit').innerHTML = '°C';
+    selectSearchSuggestion('unit');
+  } else if (e.target.id === 'farenheit') {
+    currentUnit = 'imperial';
+    celsiusEl.style.borderWidth = '1px';
+    farenheitEl.style.borderWidth = '4px';
+    document.getElementById('unit').innerHTML = '°F';
+    document.getElementById('fl-unit').innerHTML = '°F';
+    selectSearchSuggestion('unit');
+  }
 }
 
 function clearSearchSuggestions(e) {
@@ -78,12 +102,12 @@ function clearSearchSuggestions(e) {
 }
 
 function displaySearchSuggestions(e) {
+  // Clear suggestions before adding new ones
   autocomBoxEl.innerHTML = '';
   let searchInVal = searchInEl.value;
 
   // If Enter is pressed, select first suggestion
   if (e.key === 'Enter') {
-    // console.log('hi');
     selectSearchSuggestion(e);
     return;
   } else {
@@ -92,6 +116,7 @@ function displaySearchSuggestions(e) {
 
   // If search bar is empty, get the most recent picked locations from local storage
   if (searchInVal === '') {
+    // If no recent locations exist, display top  5 from array
     if (recentCities.length === 0) {
       for (let i = 0; i < 5; i++) {
         searchSuggestions.push(cityData[i]);
@@ -136,7 +161,12 @@ function displaySearchSuggestions(e) {
         let isAMatch = true;
         for (let i = 0; i < searchInVal.length; i++) {
           // Check if the letters match
-          if (element.city[i].toLowerCase() !== searchInVal[i].toLowerCase()) {
+          if (element.city[i] === undefined) {
+            isAMatch = false;
+            break;
+          } else if (
+            element.city[i].toLowerCase() !== searchInVal[i].toLowerCase()
+          ) {
             isAMatch = false;
             break;
           }
@@ -177,14 +207,19 @@ function displaySearchSuggestions(e) {
 
 function selectSearchSuggestion(e) {
   let cityObj;
+  console.log(e);
   if (e.key === 'Enter') {
     // If Enter is pressed, select first suggestion
     cityObj = searchSuggestions[0];
   } else if (e.target) {
-    // Otherwise select suggestion that was clicked on
+    // If suggestion was clicked, select that one
     cityObj = searchSuggestions[JSON.parse(e.target.id)];
   } else if (e.city !== undefined) {
+    // If geolocation was used, select that city
     cityObj = e;
+  } else if (e === 'unit') {
+    // If the units were changed, select last selected city
+    cityObj = recentCities[0];
   }
 
   // Make sure city doesn't exist in local storage
@@ -213,7 +248,7 @@ function selectSearchSuggestion(e) {
   let request = new XMLHttpRequest();
   request.open(
     'GET',
-    `https://api.openweathermap.org/data/2.5/weather?lat=${cityObj.lat}&lon=${cityObj.lng}&exclude={part}&appid=e31d73c474dafc414b05ba01b6943b7a&units=metric`
+    `https://api.openweathermap.org/data/2.5/weather?lat=${cityObj.lat}&lon=${cityObj.lng}&exclude={part}&appid=e31d73c474dafc414b05ba01b6943b7a&units=${currentUnit}`
   );
   request.send();
   request.onload = () => {
@@ -246,7 +281,8 @@ function updateHTMLElements(cityObj) {
   // Update feels like temperature
   feelsLikeEl.innerHTML = `${Math.round(weather.main.temp)}`;
   // Update weather condition
-  conditionEl.innerHTML = `${weather.weather[0].description}`;
+  let str = weather.weather[0].description;
+  conditionEl.innerHTML = `${str.charAt(0).toUpperCase() + str.slice(1)}`;
 
   // Update image based on weather condition
   if (weather.weather[0].id < 300) {
@@ -290,4 +326,6 @@ function updateHTMLElements(cityObj) {
 // add functionality to suggestions - done
 // update weather using API - done
 // get user location - done finally
-// mystery error (ex. was) - ???
+// mystery error (ex. was) - fixed!
+// Make it look nice - ???
+// Add farenheit option - done
