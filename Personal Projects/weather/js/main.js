@@ -84,6 +84,7 @@ function changeUnits(e) {
     farenheitEl.style.borderWidth = '1px';
     document.getElementById('unit').innerHTML = '°C';
     document.getElementById('fl-unit').innerHTML = '°C';
+    document.getElementById('wind-unit').innerHTML = 'm/s';
     selectSearchSuggestion('unit');
   } else if (e.target.id === 'farenheit') {
     currentUnit = 'imperial';
@@ -91,6 +92,7 @@ function changeUnits(e) {
     farenheitEl.style.borderWidth = '4px';
     document.getElementById('unit').innerHTML = '°F';
     document.getElementById('fl-unit').innerHTML = '°F';
+    document.getElementById('wind-unit').innerHTML = 'mph';
     selectSearchSuggestion('unit');
   }
 }
@@ -272,9 +274,12 @@ function updateHTMLElements(cityObj) {
   let feelsLikeEl = document.getElementById('feels-like-temp');
   let conditionEl = document.getElementById('weather-condition');
   let citySpanEl = document.getElementById('h1-location');
+  let humidityEl = document.getElementById('humidity');
+  let windSpeedEl = document.getElementById('wind-speed');
+  let windDirectionEl = document.getElementById('wind-direction');
 
   // Update title
-  citySpanEl.innerHTML = `${cityObj.city}, ${cityObj.iso3}`;
+  citySpanEl.innerHTML = `${cityObj.city}, ${cityObj.admin_name}, ${cityObj.iso3}`;
 
   // Update temperature
   tempEl.innerHTML = `${Math.round(weather.main.temp)}`;
@@ -283,6 +288,11 @@ function updateHTMLElements(cityObj) {
   // Update weather condition
   let str = weather.weather[0].description;
   conditionEl.innerHTML = `${str.charAt(0).toUpperCase() + str.slice(1)}`;
+  // Update humidity
+  humidityEl.innerHTML = `${weather.main.humidity}`;
+  // Update wind info
+  windSpeedEl.innerHTML = `${Math.round(weather.wind.speed)}`;
+  windDirectionEl.innerHTML = `${convertDegreesToDirection(weather.wind.deg)}`;
 
   // Update image based on weather condition
   if (weather.weather[0].id < 300) {
@@ -327,5 +337,5 @@ function updateHTMLElements(cityObj) {
 // update weather using API - done
 // get user location - done finally
 // mystery error (ex. was) - fixed!
-// Make it look nice - ???
+// Make it look nice - good enough
 // Add farenheit option - done

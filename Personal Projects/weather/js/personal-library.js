@@ -21,6 +21,7 @@ function getindexOfArrayObject(attribute, value, array) {
   return -1;
 }
 
+// Return closest value in an array
 function closestValue(num, arr) {
   var curr = arr[0];
   var diff = Math.abs(num - curr);
@@ -34,6 +35,7 @@ function closestValue(num, arr) {
   return curr;
 }
 
+// Return closest value in an property
 function closestPropertyValue(num, arr, attribute) {
   var curr = arr[0];
   var diff = Math.abs(num - curr);
@@ -47,6 +49,7 @@ function closestPropertyValue(num, arr, attribute) {
   return curr;
 }
 
+// Return closest coordinate in an array
 function closestCoordinateInArray(lat, lng, arr) {
   let minDistance = 10000;
   let closestPoint;
@@ -61,6 +64,22 @@ function closestCoordinateInArray(lat, lng, arr) {
     }
   }
   return closestPoint;
+}
+
+// Return closest compass direction to provided degrees
+function convertDegreesToDirection(degrees) {
+  // Define array of directions
+  directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  // Split into the 8 directions
+  degrees = (degrees * 8) / 360;
+
+  // round to nearest integer.
+  degrees = Math.round(degrees, 0);
+
+  // Ensure it's within 0-7
+  degrees = (degrees + 8) % 8;
+
+  return directions[degrees];
 }
 
 // RANDOM LIBRARY
