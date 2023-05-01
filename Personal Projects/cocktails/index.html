@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Cocktail Generator</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="js/personal-library.js"></script>
+    <script defer src="js/main.js"></script>
+  </head>
+
+  <body>
+    <h1>Gimme a drink</h1>
+    <hr />
+    <!-- daily cocktail -->
+    <div id="daily-cocktail">
+      <p>e</p>
+    </div>
+    <hr />
+    <!-- search bar -->
+    <form autocomplete="off">
+      <div id="wrapper">
+        <div id="search-bar">
+          <img id="search-icon" src="img/search.png" alt="search" />
+          <input
+            type="text"
+            id="search-container"
+            placeholder="Search for a drink"
+          />
+          <img id="clear-icon" src="img/x.png" alt="clear" />
+          <div id="autocom-box">
+            <!-- list items are inserted from javascript -->
+          </div>
+          <p id="search-err" class="error"></p>
+        </div>
+      </div>
+    </form>
+    <hr />
+    <!-- filter by ingredient -->
+    <div id="ingredient-filter">
+      <button>filter</button>
+    </div>
+
+    <hr />
+    <div id="output"></div>
+  </body>
+</html>
