@@ -2,7 +2,7 @@
 // CHANGE SIZE
 let cnv = document.querySelector('canvas');
 let ctx = cnv.getContext('2d');
-cnv.width = 750;
+cnv.width = 660;
 cnv.height = 650;
 
 // Object array
@@ -10,6 +10,8 @@ let blocks = [];
 
 // Global variables
 let score = 0;
+let level = 0;
+let lines = 0;
 
 // Deltatime function
 window.requestAnimationFrame(update);
@@ -31,39 +33,96 @@ function draw() {
 
   // Draw game area
   ctx.fillStyle = 'White';
-  ctx.fillRect(180, 30, 390, 585);
+  ctx.fillRect(180, 30, 300, 600);
 
   // Draw boxes
-  for (let i = 180; i < 565; i += 39) {
-    for (let j = 30; j < 585; j += 39) {
-      ctx.strokeStyle = 'black';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(i, j, 40, 40);
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 2;
+  for (let i = 180; i < 470; i += 30) {
+    for (let j = 30; j <= 600; j += 30) {
+      ctx.strokeRect(i, j, 30, 30);
     }
   }
 
   // Draw Outline
-  ctx.strokeStyle = 'steelblue';
+  ctx.strokeStyle = 'darkcyan';
   ctx.lineWidth = 10;
-  ctx.strokeRect(174, 24, 403, 598);
-
-  // ctx.strokeStyle = 'steelblue';
-  // ctx.lineWidth = 5;
-  // ctx.strokeRect(8, 28, 154, 129);
+  ctx.strokeRect(174, 24, 312, 612);
 
   // Draw Hold Box
-  ctx.fillStyle = 'steelblue';
-  ctx.fillRect(10, 30, 150, 125);
+  ctx.fillStyle = 'darkcyan';
+  ctx.fillRect(10, 20, 150, 125);
 
   // Draw Hold Text
   ctx.font = '25px Verdana, sans-serif';
+  ctx.textAlign = 'center';
   ctx.fillStyle = 'black';
-  ctx.fillText('HOLD', 45, 55);
+
+  ctx.fillText('HOLD', 85, 45);
 
   // Draw Hold Inner Box
   ctx.fillStyle = '#eafbfb';
-  ctx.fillRect(20, 60, 130, 85);
-  ctx.strokeRect(20, 60, 130, 85);
+  ctx.fillRect(20, 50, 130, 85);
+
+  // Draw Next Box
+  ctx.fillStyle = 'darkcyan';
+  ctx.fillRect(500, 20, 150, 375);
+
+  // Draw Next Text
+  ctx.font = '25px Verdana, sans-serif';
+  ctx.fillStyle = 'black';
+  ctx.fillText('NEXT', 575, 45);
+
+  // Draw Next Inner Box
+  ctx.fillStyle = '#eafbfb';
+  ctx.fillRect(510, 50, 130, 335);
+
+  // Draw Scoreboard Box
+  ctx.fillStyle = 'darkcyan';
+  ctx.fillRect(10, 392, 150, 249);
+
+  // Draw Score Text
+  ctx.font = '25px Verdana, sans-serif';
+  ctx.fillStyle = 'black';
+  ctx.fillText('SCORE', 85, 443);
+
+  // Draw Score Inner Box
+  ctx.fillStyle = '#eafbfb';
+  ctx.fillRect(20, 448, 130, 25);
+
+  // Draw Score Number
+  ctx.font = '25px Verdana, sans-serif';
+  ctx.fillStyle = 'black';
+  ctx.textAlign = 'center';
+  ctx.fillText(score, 85, 470);
+
+  // Draw Level Text
+  ctx.font = '25px Verdana, sans-serif';
+  ctx.fillStyle = 'black';
+  ctx.fillText('LEVEL', 85, 513);
+
+  // Draw Level Inner Box
+  ctx.fillStyle = '#eafbfb';
+  ctx.fillRect(20, 518, 130, 25);
+
+  // Draw Level Number
+  ctx.font = '25px Verdana, sans-serif';
+  ctx.fillStyle = 'black';
+  ctx.fillText(level, 85, 540);
+
+  // Draw Lines Text
+  ctx.font = '25px Verdana, sans-serif';
+  ctx.fillStyle = 'black';
+  ctx.fillText('LINES', 85, 583);
+
+  // Draw Lines Inner Box
+  ctx.fillStyle = '#eafbfb';
+  ctx.fillRect(20, 587, 130, 25);
+
+  // Draw Lines Number
+  ctx.font = '25px Verdana, sans-serif';
+  ctx.fillStyle = 'black';
+  ctx.fillText(lines, 85, 610);
 
   // ctx.font = '40px Monospace';
   // ctx.fillStyle = 'black';
