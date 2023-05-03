@@ -9,15 +9,14 @@ cnv.height = 650;
 let blocks = [];
 
 // Global variables
-let score = 0;
-let level = 0;
-let lines = 0;
+let score = 10000;
+let level = 20;
+let lines = 47;
 
 // Deltatime function
 window.requestAnimationFrame(update);
 function update() {
   // RUN HELPER FUNCTIONS
-  draw();
   collision();
   // gameOverScreen();
 
@@ -25,6 +24,7 @@ function update() {
   window.requestAnimationFrame(update);
 }
 
+draw();
 function draw() {
   // console.log('draw');
   // DRAW BACKROUND
@@ -123,6 +123,16 @@ function draw() {
   ctx.font = '25px Verdana, sans-serif';
   ctx.fillStyle = 'black';
   ctx.fillText(lines, 85, 610);
+
+  // Draw Tetris Logo
+  let htmlImg = document.getElementById('logo');
+  ctx.drawImage(htmlImg, 495, 535, 160, 105);
+  // 500, 460, 160, 105);
+
+  // Draw Pause Icon
+  ctx.fillStyle = 'darkcyan';
+  ctx.fillRect(548, 435, 15, 60);
+  ctx.fillRect(579, 435, 15, 60);
 
   // ctx.font = '40px Monospace';
   // ctx.fillStyle = 'black';
