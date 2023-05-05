@@ -10,7 +10,7 @@ let score = 10000;
 let level = 20;
 let lines = 47;
 let frames = 0;
-let interval = 60;
+let interval = 48;
 
 var lastTime = null;
 var frameRate = 1000 / 60;
@@ -37,6 +37,7 @@ var frameRate = 1000 / 60;
 //   last_frame_time_ms = 0, // The last time the loop was run
 //   max_FPS = 60; // The maximum FPS we want to allow
 
+// window.requestAnimationFrame(gameLoop);
 // function gameLoop(timestamp) {
 //   // Throttle the frame rate.
 //   if (timestamp < last_frame_time_ms + 1000 / max_FPS) {
@@ -61,20 +62,49 @@ var frameRate = 1000 / 60;
 //   requestAnimationFrame(gameLoop);
 // }
 
-function update(time_step) {
-  console.log(time_step);
+function animate() {
+  // perform some animation task here
+  update();
+
+  // setTimeout(() => {
+  requestAnimationFrame(animate);
+  // }, 1000 / fps);
+}
+animate();
+
+function update() {
   frames++;
-  if (frames % interval === 0) {
-    frames = frames / interval;
-    console.log(frames);
+  // console.log(frames);
+  if (frames >= interval) {
+    // console.log('update');
+    frames = 0;
   }
+
+  // console.log(frames);
+  // if (frames % fps === 0) {
+  //   frames = frames / fps;
+  //   console.log(frames);
+  // }
   // console.log(frames);
 }
 
-setInterval(test, 1000);
-function test() {
-  console.log('test');
-}
+// setInterval(test, 1000);
+// function test() {
+//   // console.log('test');
+// }
 
-// TO DO
-// Add gui elements
+// let frame = 0;
+// anim();
+
+// function anim() {
+//   window.requestAnimationFrame(anim);
+//   frame++;
+// }
+
+// setInterval(() => {
+//   console.log(frame);
+// }, 1000);
+
+// // TO DO
+// // Add gui elements
+// https://tetris.fandom.com/wiki/Scoring
