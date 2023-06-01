@@ -4,13 +4,13 @@
 let cityData = [];
 let weather = [];
 let searchSuggestions = [];
-let recentCities = initArray('recentCities');
+let recentCities = initArray("recentCities");
 
 // Global variables
-let currentUnit = 'metric';
+let currentUnit = "metric";
 
 // Get city data
-fetch('../weather/data/worldcities.json')
+fetch("../data/worldcities.json")
   .then(function (response) {
     return response.json();
   })
@@ -18,30 +18,30 @@ fetch('../weather/data/worldcities.json')
     cityData = data;
   })
   .catch(function (err) {
-    console.log('error: ' + err);
+    console.log("error: " + err);
   });
 
 // HTML Elements
-let searchInEl = document.getElementById('search-container');
-let clearBtnEl = document.getElementById('clear-icon');
-let autocomBoxEl = document.getElementById('autocom-box');
-let celsiusEl = document.getElementById('celsius');
-let farenheitEl = document.getElementById('farenheit');
+let searchInEl = document.getElementById("search-container");
+let clearBtnEl = document.getElementById("clear-icon");
+let autocomBoxEl = document.getElementById("autocom-box");
+let celsiusEl = document.getElementById("celsius");
+let farenheitEl = document.getElementById("farenheit");
 
 // Event listeners
-document.addEventListener('click', clearSearchSuggestions);
-searchInEl.addEventListener('keyup', displaySearchSuggestions);
-searchInEl.addEventListener('click', displaySearchSuggestions);
-clearBtnEl.addEventListener('click', clearSearchBar);
-clearBtnEl.addEventListener('click', displaySearchSuggestions);
-celsiusEl.addEventListener('click', changeUnits);
-farenheitEl.addEventListener('click', changeUnits);
+document.addEventListener("click", clearSearchSuggestions);
+searchInEl.addEventListener("keyup", displaySearchSuggestions);
+searchInEl.addEventListener("click", displaySearchSuggestions);
+clearBtnEl.addEventListener("click", clearSearchBar);
+clearBtnEl.addEventListener("click", displaySearchSuggestions);
+celsiusEl.addEventListener("click", changeUnits);
+farenheitEl.addEventListener("click", changeUnits);
 
 // If geolocation is supported get user position
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(getLocation);
 } else {
-  console.log('Geolocation is not supported by this browser.');
+  console.log("Geolocation is not supported by this browser.");
 }
 
 function processLocation(position) {
@@ -73,43 +73,43 @@ function onFulfilled(city) {
 
 function clearSearchBar() {
   // Clear the search bar on button press
-  searchInEl.value = '';
+  searchInEl.value = "";
 }
 
 function changeUnits(e) {
   // If button is pressed change units and update weather
-  if (e.target.id === 'celsius') {
-    currentUnit = 'metric';
-    celsiusEl.style.borderWidth = '4px';
-    farenheitEl.style.borderWidth = '1px';
-    document.getElementById('unit').innerHTML = '°C';
-    document.getElementById('fl-unit').innerHTML = '°C';
-    document.getElementById('wind-unit').innerHTML = 'm/s';
-    selectSearchSuggestion('unit');
-  } else if (e.target.id === 'farenheit') {
-    currentUnit = 'imperial';
-    celsiusEl.style.borderWidth = '1px';
-    farenheitEl.style.borderWidth = '4px';
-    document.getElementById('unit').innerHTML = '°F';
-    document.getElementById('fl-unit').innerHTML = '°F';
-    document.getElementById('wind-unit').innerHTML = 'mph';
-    selectSearchSuggestion('unit');
+  if (e.target.id === "celsius") {
+    currentUnit = "metric";
+    celsiusEl.style.borderWidth = "4px";
+    farenheitEl.style.borderWidth = "1px";
+    document.getElementById("unit").innerHTML = "°C";
+    document.getElementById("fl-unit").innerHTML = "°C";
+    document.getElementById("wind-unit").innerHTML = "m/s";
+    selectSearchSuggestion("unit");
+  } else if (e.target.id === "farenheit") {
+    currentUnit = "imperial";
+    celsiusEl.style.borderWidth = "1px";
+    farenheitEl.style.borderWidth = "4px";
+    document.getElementById("unit").innerHTML = "°F";
+    document.getElementById("fl-unit").innerHTML = "°F";
+    document.getElementById("wind-unit").innerHTML = "mph";
+    selectSearchSuggestion("unit");
   }
 }
 
 function clearSearchSuggestions(e) {
   // Clear search suggestions when clicked elsewhere
-  if (e.target.id !== 'search-container' && e.target.id !== 'clear-icon')
-    autocomBoxEl.innerHTML = '';
+  if (e.target.id !== "search-container" && e.target.id !== "clear-icon")
+    autocomBoxEl.innerHTML = "";
 }
 
 function displaySearchSuggestions(e) {
   // Clear suggestions before adding new ones
-  autocomBoxEl.innerHTML = '';
+  autocomBoxEl.innerHTML = "";
   let searchInVal = searchInEl.value;
 
   // If Enter is pressed, select first suggestion
-  if (e.key === 'Enter') {
+  if (e.key === "Enter") {
     selectSearchSuggestion(e);
     return;
   } else {
@@ -117,7 +117,7 @@ function displaySearchSuggestions(e) {
   }
 
   // If search bar is empty, get the most recent picked locations from local storage
-  if (searchInVal === '') {
+  if (searchInVal === "") {
     // If no recent locations exist, display top  5 from array
     if (recentCities.length === 0) {
       for (let i = 0; i < 5; i++) {
@@ -194,15 +194,15 @@ function displaySearchSuggestions(e) {
   }
 
   // Add HTML elements
-  let newUl = document.createElement('ul');
+  let newUl = document.createElement("ul");
   autocomBoxEl.appendChild(newUl);
 
   for (let i = 0; i < searchSuggestions.length; i++) {
     const element = searchSuggestions[i];
-    let newLi = document.createElement('li');
-    newLi.setAttribute('id', `${i}`);
+    let newLi = document.createElement("li");
+    newLi.setAttribute("id", `${i}`);
     newLi.innerHTML = `&nbsp${element.city}, ${element.admin_name}, ${element.country}`;
-    newLi.addEventListener('click', selectSearchSuggestion);
+    newLi.addEventListener("click", selectSearchSuggestion);
     newUl.appendChild(newLi);
   }
 }
@@ -210,7 +210,7 @@ function displaySearchSuggestions(e) {
 function selectSearchSuggestion(e) {
   let cityObj;
   console.log(e);
-  if (e.key === 'Enter') {
+  if (e.key === "Enter") {
     // If Enter is pressed, select first suggestion
     cityObj = searchSuggestions[0];
   } else if (e.target) {
@@ -219,7 +219,7 @@ function selectSearchSuggestion(e) {
   } else if (e.city !== undefined) {
     // If geolocation was used, select that city
     cityObj = e;
-  } else if (e === 'unit') {
+  } else if (e === "unit") {
     // If the units were changed, select last selected city
     cityObj = recentCities[0];
   }
@@ -235,7 +235,7 @@ function selectSearchSuggestion(e) {
       // If city already exists, remove it and add it to the start of the array
       recentCities.splice(i, 1);
       recentCities.unshift(cityObj);
-      saveArray('recentCities', recentCities);
+      saveArray("recentCities", recentCities);
       isInArray = true;
     }
   }
@@ -243,13 +243,13 @@ function selectSearchSuggestion(e) {
   if (isInArray === false) {
     // Save Selected City to Local Storage
     recentCities.unshift(cityObj);
-    saveArray('recentCities', recentCities);
+    saveArray("recentCities", recentCities);
   }
 
   // API request
   let request = new XMLHttpRequest();
   request.open(
-    'GET',
+    "GET",
     `https://api.openweathermap.org/data/2.5/weather?lat=${cityObj.lat}&lon=${cityObj.lng}&exclude={part}&appid=e31d73c474dafc414b05ba01b6943b7a&units=${currentUnit}`
   );
   request.send();
@@ -269,14 +269,14 @@ function selectSearchSuggestion(e) {
 
 function updateHTMLElements(cityObj) {
   // Get HTML elements
-  let tempEl = document.getElementById('temp');
-  let imgEl = document.getElementById('weather-img');
-  let feelsLikeEl = document.getElementById('feels-like-temp');
-  let conditionEl = document.getElementById('weather-condition');
-  let citySpanEl = document.getElementById('h1-location');
-  let humidityEl = document.getElementById('humidity');
-  let windSpeedEl = document.getElementById('wind-speed');
-  let windDirectionEl = document.getElementById('wind-direction');
+  let tempEl = document.getElementById("temp");
+  let imgEl = document.getElementById("weather-img");
+  let feelsLikeEl = document.getElementById("feels-like-temp");
+  let conditionEl = document.getElementById("weather-condition");
+  let citySpanEl = document.getElementById("h1-location");
+  let humidityEl = document.getElementById("humidity");
+  let windSpeedEl = document.getElementById("wind-speed");
+  let windDirectionEl = document.getElementById("wind-direction");
 
   // Update title
   citySpanEl.innerHTML = `${cityObj.city}, ${cityObj.admin_name}, ${cityObj.iso3}`;
@@ -296,29 +296,29 @@ function updateHTMLElements(cityObj) {
 
   // Update image based on weather condition
   if (weather.weather[0].id < 300) {
-    imgEl.setAttribute('src', 'img/thunder.png');
+    imgEl.setAttribute("src", "img/thunder.png");
   } else if (weather.weather[0].id < 400) {
-    imgEl.setAttribute('src', 'img/drizzle.png');
+    imgEl.setAttribute("src", "img/drizzle.png");
   } else if (weather.weather[0].id < 505) {
-    imgEl.setAttribute('src', 'img/rain.png');
+    imgEl.setAttribute("src", "img/rain.png");
   } else if (weather.weather[0].id === 511) {
-    imgEl.setAttribute('src', 'img/freezing-rain.png');
+    imgEl.setAttribute("src", "img/freezing-rain.png");
   } else if (weather.weather[0].id < 532) {
-    imgEl.setAttribute('src', 'img/shower-rain.png');
+    imgEl.setAttribute("src", "img/shower-rain.png");
   } else if (weather.weather[0].id < 623) {
-    imgEl.setAttribute('src', 'img/snow.png');
+    imgEl.setAttribute("src", "img/snow.png");
   } else if (weather.weather[0].id < 782) {
-    imgEl.setAttribute('src', 'img/mist.png');
+    imgEl.setAttribute("src", "img/mist.png");
   } else if (weather.weather[0].id === 800) {
-    imgEl.setAttribute('src', 'img/clear.png');
+    imgEl.setAttribute("src", "img/clear.png");
   } else if (weather.weather[0].id === 801) {
-    imgEl.setAttribute('src', 'img/few-clouds.png');
+    imgEl.setAttribute("src", "img/few-clouds.png");
   } else if (weather.weather[0].id === 802) {
-    imgEl.setAttribute('src', 'img/scattered-clouds.png');
+    imgEl.setAttribute("src", "img/scattered-clouds.png");
   } else if (weather.weather[0].id === 803) {
-    imgEl.setAttribute('src', 'img/broken-clouds.png');
+    imgEl.setAttribute("src", "img/broken-clouds.png");
   } else if (weather.weather[0].id === 804) {
-    imgEl.setAttribute('src', 'img/overcast-clouds.png');
+    imgEl.setAttribute("src", "img/overcast-clouds.png");
   }
 }
 
