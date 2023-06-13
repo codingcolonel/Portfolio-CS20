@@ -10,7 +10,7 @@ let recentCities = initArray("recentCities");
 let currentUnit = "metric";
 
 // Get city data
-fetch("../data/worldcities.json")
+fetch("./data/worldcities.json")
   .then(function (response) {
     return response.json();
   })
